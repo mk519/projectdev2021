@@ -6,21 +6,18 @@ class Login {
 }
 
 function LoginOnClick() {
-    console.log("Button Clicked")
+    console.log("Button Clicked");
     var user = document.getElementById("txtUsername").value;
     var pass = document.getElementById("txtPassword").value;
 
     const login = new Login(user, pass);
-    SendLogin(login);
-
+    HttpPostRequest(login, "https://collegem820210207221016.azurewebsites.net/api/User/login");
 }
 
-
-function SendLogin(instance) {
-    const dataToSend = JSON.stringify(instance);
-    console.log(dataToSend)
+function HttpPostRequest(dataObject, url) {
+    const dataToSend = JSON.stringify(dataObject);
     let dataReceived = "";
-    fetch("https://collegem820210207221016.azurewebsites.net/api/User/login", {
+    fetch(url, {
         credentials: "same-origin",
         mode: "cors",
         method: "post",
@@ -33,18 +30,18 @@ function SendLogin(instance) {
                 return resp.json()
             } else {
                 console.log("Status: " + resp.status)
+                // UPDATE LOGIN PAGE FOR FAILED LOGIN
                 return Promise.reject("server")
             }
         })
         .then(dataJson => {
             console.log(dataJson)
-            dataReceived = JSON.parse(JSON.stringify(dataJson))
-            console.log(dataReceived.terms[0])
+            sessionStorage.setItem("userdata", JSON.stringify(dataJson));
+            dataReceived = JSON.parse(JSON.stringify(dataJson));
+            window.location.href = './index.html';
         })
         .catch(err => {
             if (err === "server") return
             console.log(err)
         })
-
-    console.log(`Received: ${dataReceived}`)
 }
