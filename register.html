@@ -14,6 +14,7 @@
     <!-- INSERT CSS-->
     <link href="css/style.css"
     rel="stylesheet">
+    <script src="js/register.js"></script>
 </head>
 
 <body>
@@ -27,37 +28,47 @@
                 <form>
 
                     <div class="inputBx">
+                        <span>Username</span>
+                        <input id="username" type="text" name="">
+                    </div>
+
+                    <div class="inputBx">
                         <span>First Name</span>
-                        <input type="text" name="">
+                        <input id="firstName" type="text" name="">
                     </div>
 
                     <div class="inputBx">
                         <span>Last Name</span>
-                        <input type="text" name="">
+                        <input id="lastName" type="text" name="">
+                    </div>
+
+                    <div class="inputBx">
+                        <span>Birth Date</span>
+                        <input id="birthDate" placeholder="yyyy-mm-dd" type="text" name="">
                     </div>
 
                     <div class="inputBx">
                         <span>Program Name</span>
-                        <input type="text" name="">
+                        <input id="programName" type="text" name="">
                     </div>
 
                     <div class="inputBx">
                         <span>Name of School/Institution</span>
-                        <input type="text" name="">
+                        <input id="schoolName" type="text" name="">
                     </div>
 
                     <div class="inputBx">
                         <span>Email Address</span>
-                        <input type="text" name="">
+                        <input id="emailAddress" type="text" name="">
                     </div>
 
                     <div class="inputBx">
                         <span>Password</span>
-                        <input type="password" name="">
+                        <input id="password" type="password" name="">
                     </div>
 
                     <div class="inputBx">
-                        <input type="Submit" value="Register" name="">
+                        <input type="button" value="Register" onclick="CreateUserOnClick()" name="">
                     </div>
 
                     <div class="inputBx">
