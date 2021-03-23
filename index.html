@@ -11,9 +11,10 @@
     <link rel="icon" type="image/png" sizes="16x16" href="#needslink">
     <!-- Custom CSS -->
    <link href="css/style.min.css" rel="stylesheet">
+   <script src="js/index.js"></script>
 </head>
 
-<body>
+<body onload="onLoadIndex()">
     <!-- ============================================================== -->
     <!-- Preloader - style you can find in spinners.css -->
     <!-- ============================================================== -->
@@ -80,7 +81,7 @@
                         <!-- ============================================================== -->
                         <li>
                             <a class="profile-pic" href="#">
-                                <img src="img/profile.jpg" alt="user-img" width="36" class="img-circle"><span class="text-white font-medium">Michael Pantaleon</span></a>
+                                <img src="img/profile.jpg" alt="user-img" width="36" class="img-circle"><span id="nameTopScreen" class="text-white font-medium">Name Placeholder</span></a>
                         </li>
                         <!-- ============================================================== -->
                         <!-- User profile and search -->

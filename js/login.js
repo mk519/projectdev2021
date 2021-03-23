@@ -31,6 +31,7 @@ function HttpPostRequest(dataObject, url) {
             } else {
                 console.log("Status: " + resp.status)
                 // UPDATE LOGIN PAGE FOR FAILED LOGIN
+                document.getElementById("txtPassword").value = "";
                 return Promise.reject("server")
             }
         })
