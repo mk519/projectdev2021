@@ -38,7 +38,8 @@ function SendLogin(instance) {
         })
         .then(dataJson => {
             console.log(dataJson)
-            dataReceived = JSON.parse(dataJson)
+            dataReceived = JSON.parse(JSON.stringify(dataJson))
+            console.log(dataReceived.terms[0])
         })
         .catch(err => {
             if (err === "server") return
