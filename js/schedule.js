@@ -1,27 +1,9 @@
-function onLoadIndex() {
+function onLoadSchedule() {
     var userData = JSON.parse(sessionStorage.getItem("userdata"));
     var user = new User();
     user.populateWithJson(userData);
-
-    var numClasses = 0;
-    var numExams = 0;
-    var numAssignments = 0;
-
-    for (t = 0; t < userData.terms.length; t++) {
-        for (c = 0; c < userData.terms[t].classes.length; c++) {
-            numClasses++;
-            for (e = 0; e < userData.terms[t].classes[c].exams.length; e++) {
-                numExams++;
-            }
-            for (a = 0; a < userData.terms[t].classes[c].assignments.length; a++) {
-                numAssignments++;
-            }
-        }
-    }
     document.getElementById("nameTopScreen").innerHTML = user.firstName + " " + user.lastName;
-    document.getElementById("totalCourses").innerHTML = numClasses;
-    document.getElementById("totalAssignments").innerHTML = numExams;
-    document.getElementById("totalExams").innerHTML = numAssignments;
+
     for (s = 0; s < userData.scheduleItems.length; s++) {
         var item = new ScheduleItem();
         item.populateWithJson(userData.scheduleItems[s]);
