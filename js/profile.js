@@ -96,7 +96,6 @@ function HttpGetPageLoadRequestProfileData(url) {
             }
         })
         .then(dataJson => {
-            console.log(dataJson)
             response = JSON.parse(JSON.stringify(dataJson));
             var user = new User();
             user.populateWithJson(response);
@@ -131,7 +130,6 @@ function HttpGetPageLoadRequestSleepData(url) {
             }
         })
         .then(dataJson => {
-            console.log(dataJson)
             response = JSON.parse(JSON.stringify(dataJson));
             var sleep = new Sleep();
             sleep.populateWithJson(response);

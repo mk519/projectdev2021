@@ -99,7 +99,6 @@ function HttpGetPageLoadRequest(url) {
             }
         })
         .then(dataJson => {
-            console.log(dataJson)
             response = JSON.parse(JSON.stringify(dataJson));
             for (s = 0; s < response.schedule.length; s++) {
                 var item = new ScheduleItem();

@@ -139,7 +139,6 @@ function HttpGetPageLoadRequest(url) {
             }
         })
         .then(dataJson => {
-            console.log(dataJson)
             classes = JSON.parse(JSON.stringify(dataJson));
             for (c = 0; c < classes.length; c++) {
                 var _class = new Class();

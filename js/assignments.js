@@ -3,7 +3,7 @@ function onLoadAssignment() {
     var user = new User();
     user.populateWithJson(userData);
     document.getElementById("nameTopScreen").innerHTML = user.firstName + " " + user.lastName;
-    HttpGetPageLoadRequest("https://collegem820210207221016.azurewebsites.net/api/Assignment/User/" + user.userId)
+    HttpGetPageLoadRequestClasses("https://collegem820210207221016.azurewebsites.net/api/Class/User/" + user.userId, user.userId)
 }
 
 class User {
@@ -125,7 +125,7 @@ function updateHoursMonth(hours) {
     }
 }
 
-function HttpGetPageLoadRequest(url) {
+function HttpGetPageLoadRequest(url, classes) {
     fetch(url, {
         credentials: "same-origin",
         mode: "cors",
@@ -144,11 +144,10 @@ function HttpGetPageLoadRequest(url) {
         .then(dataJson => {
             console.log(dataJson)
             assignments = JSON.parse(JSON.stringify(dataJson));
-            var userData = JSON.parse(sessionStorage.getItem("userdata"));
             for (a = 0; a < assignments.length; a++) {
                 var assignment = new Assignment();
                 assignment.populateWithJson(assignments[a]);
-                document.getElementById("assignmentList").innerHTML += assignment.createChartHTML(getCourseCode(assignment.classId, userData));
+                document.getElementById("assignmentList").innerHTML += assignment.createChartHTML(getCourseCode(assignment.classId, classes));
             }
         })
         .catch(err => {
@@ -157,14 +156,38 @@ function HttpGetPageLoadRequest(url) {
         })
 }
 
-function getCourseCode(classId, userData){
-    for (t = 0; t < userData.terms.length; t++) {
-        for (c = 0; c < userData.terms[t].classes.length; c++) {
-            var _class = new Class();
-                _class.populateWithJson(userData.terms[t].classes[c]);
-                if(_class.classId == classId){
-                    return _class.courseCode;
-                }
+function HttpGetPageLoadRequestClasses(url, userId) {
+    fetch(url, {
+        credentials: "same-origin",
+        mode: "cors",
+        method: "get",
+        headers: { "Content-Type": "application/json" }
+    })
+        .then(resp => {
+            if (resp.status === 200) {
+                console.log("Status: " + resp.status)
+                return resp.json()
+            } else {
+                console.log("Status: " + resp.status)
+                return Promise.reject("server")
+            }
+        })
+        .then(dataJson => {
+            classes = JSON.parse(JSON.stringify(dataJson));
+            HttpGetPageLoadRequest("https://collegem820210207221016.azurewebsites.net/api/Assignment/User/" + userId, classes)
+        })
+        .catch(err => {
+            if (err === "server") return
+            console.log(err)
+        })
+}
+
+function getCourseCode(classId, classes) {
+    for (c = 0; c < classes.length; c++) {
+        var _class = new Class();
+        _class.populateWithJson(classes[c]);
+        if (_class.classId == classId) {
+            return _class.courseCode;
         }
     }
     return "null";
