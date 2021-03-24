@@ -157,18 +157,21 @@ function HttpGetPageLoadRequest(url) {
 
 function createAddAssignmentButton(classId){
     var style = 'style="border: 2px solid black;background-color:#008CBA;margin: 4px 2px;display: inline-block;text-align:center;font-size: 10px;text-decoration: none;border: none;color: white;padding: 4px 8px;'
-    var onclick = 'onclick="TODO('+classId+')"'
-    return '<button ' + style + onclick +'type="button" >Add Assignment</button>';
+    var onclick = 'onclick="TODO(this.id)"'
+    var id = ' id="'+classId+'" '
+    return '<button ' + id + style + onclick +'type="button" >Add Assignment</button>';
 }
 
 function createAddExamButton(classId){
     var style = 'style="border: 2px solid black;background-color:#008CBA;margin: 4px 2px;display: inline-block;text-align:center;font-size: 10px;text-decoration: none;border: none;color: white;padding: 4px 8px;'
-    var onclick = 'onclick="TODO('+classId+')"'
-    return '<button ' + style + onclick +'type="button" >Add Exam</button>';
+    var onclick = 'onclick="TODO(this.id)"'
+    var id = ' id="'+classId+'" '
+    return '<button ' + id + style + onclick +'type="button" >Add Exam</button>';
 }
 
 function createDeleteButton(classId){
     var style = 'style="border: 2px solid black;background-color:#f44336;margin: 4px 2px;display: inline-block;text-align:center;font-size: 10px;text-decoration: none;border: none;color: white;padding: 4px 8px;'
-    var onclick = 'onclick="TODO('+classId+')"'
-    return '<button ' + style + onclick +'type="button" >Delete</button>';
+    var onclick = 'onclick="TODO(this.id)"'
+    var id = ' id="'+classId+'" '
+    return '<button '+ id + style + onclick +'type="button" >Delete</button>';
 }

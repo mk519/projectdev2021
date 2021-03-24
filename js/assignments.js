@@ -196,6 +196,7 @@ function getCourseCode(classId, classes) {
 
 function createDeleteButton(id){
     var style = 'style="border: 2px solid black;background-color:#f44336;margin: 4px 2px;display: inline-block;text-align:center;font-size: 12px;text-decoration: none;border: none;color: white;padding: 4px 8px;'
-    var onclick = 'onclick="TODO('+id+')"'
-    return '<button ' + style + onclick +'type="button" >Delete</button>';
+    var onclick = 'onclick="TODO(this.id)"'
+    var id = ' id="'+id+'" '
+    return '<button '+ id + style + onclick +'type="button" >Delete</button>';
 }
