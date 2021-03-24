@@ -255,21 +255,21 @@
                                 <form class="form-horizontal form-material">
                                     <h4><b>Sleep Schedule (Weekday)</b></h4><br>
                                     <div class="form-group mb-4">
-                                        <label class="col-md-12 p-0">Wake Time</label>
+                                        <label id="lblWeekdayTime" class="col-md-12 p-0">Wake Time</label>
                                         <div class="col-md-12 border-bottom p-0">
                                             <input id="weekdayTime" type="text"
                                                 class="form-control p-0 border-0"> </div>
                                     </div>
 
                                     <div class="form-group mb-4">
-                                        <label class="col-md-12 p-0">Hours of Sleep</label>
+                                        <label id="lblWeekdayHours" class="col-md-12 p-0">Hours of Sleep</label>
                                         <div class="col-md-12 border-bottom p-0">
                                             <input id="weekdayHours" type="text"
                                                 class="form-control p-0 border-0"> </div>
                                     </div>
                                     <div class="form-group mb-4">
                                         <div class="col-sm-12">
-                                            <button class="btn btn-success">Apply Changes</button>
+                                            <input type="button" onclick="UpdateSleepDetailsOnClick()" value="Apply Changes" />
                                         </div>
                                     </div>
                                 </form>
@@ -284,20 +284,20 @@
                                 <form class="form-horizontal form-material">
                                     <h4><b>Sleep Schedule (Weekend)</b></h4><br>
                                     <div class="form-group mb-4">
-                                        <label class="col-md-12 p-0">Wake Time</label>
+                                        <label id="lblWeekendTime" class="col-md-12 p-0">Wake Time</label>
                                         <div class="col-md-12 border-bottom p-0">
                                             <input id="weekendTime" type="text"
                                                 class="form-control p-0 border-0"> </div>
                                     </div>
                                     <div class="form-group mb-4">
-                                        <label class="col-md-12 p-0">Hours of Sleep</label>
+                                        <label id="lblWeekendHours" class="col-md-12 p-0">Hours of Sleep</label>
                                         <div class="col-md-12 border-bottom p-0">
                                             <input id="weekendHours" type="text"
                                                 class="form-control p-0 border-0"> </div>
                                     </div>
                                     <div class="form-group mb-4">
                                         <div class="col-sm-12">
-                                            <button class="btn btn-success">Apply Changes</button>
+                                            <input type="button" onclick="UpdateSleepDetailsOnClick()" value="Apply Changes" />
                                         </div>
                                     </div>
                                 </form>
