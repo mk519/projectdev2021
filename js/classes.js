@@ -102,7 +102,10 @@ class Class {
         var tmStart = "<td>" + startHours + ":" + startMins + "</td>";
         var tmEnd = "<td>" + endHours + ":" + endMins + "</td>";
         var days = "<td>" + daysOfWeek + "</td>";
-        return "<tr>" + courseCode + courseName + tmStart + tmEnd + days + "</tr>"
+        var btnAssignmentAdd = "<td>" + createAddAssignmentButton(this.classId) + "</td>";
+        var btnExamAdd = "<td>" + createAddExamButton(this.classId) + "</td>";
+        var btnDelete = "<td>" + createDeleteButton(this.classId) + "</td>";
+        return "<tr>" + courseCode + courseName + tmStart + tmEnd + days + btnAssignmentAdd + btnExamAdd + btnDelete +"</tr>"
     }
 }
 
@@ -150,4 +153,22 @@ function HttpGetPageLoadRequest(url) {
             if (err === "server") return
             console.log(err)
         })
+}
+
+function createAddAssignmentButton(classId){
+    var style = 'style="border: 2px solid black;background-color:#008CBA;margin: 4px 2px;display: inline-block;text-align:center;font-size: 10px;text-decoration: none;border: none;color: white;padding: 4px 8px;'
+    var onclick = 'onclick="TODO('+classId+')"'
+    return '<button ' + style + onclick +'type="button" >Add Assignment</button>';
+}
+
+function createAddExamButton(classId){
+    var style = 'style="border: 2px solid black;background-color:#008CBA;margin: 4px 2px;display: inline-block;text-align:center;font-size: 10px;text-decoration: none;border: none;color: white;padding: 4px 8px;'
+    var onclick = 'onclick="TODO('+classId+')"'
+    return '<button ' + style + onclick +'type="button" >Add Exam</button>';
+}
+
+function createDeleteButton(classId){
+    var style = 'style="border: 2px solid black;background-color:#f44336;margin: 4px 2px;display: inline-block;text-align:center;font-size: 10px;text-decoration: none;border: none;color: white;padding: 4px 8px;'
+    var onclick = 'onclick="TODO('+classId+')"'
+    return '<button ' + style + onclick +'type="button" >Delete</button>';
 }
