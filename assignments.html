@@ -11,9 +11,10 @@
     <link rel="icon" type="image/png" sizes="16x16" href="#needslink">
     <!-- Custom CSS -->
    <link href="css/style.min.css" rel="stylesheet">
+   <script src="js/assignments.js"></script>
 </head>
 
-<body>
+<body onload="onLoadAssignment()">
     <!-- ============================================================== -->
     <!-- Preloader - style you can find in spinners.css -->
     <!-- ============================================================== -->
@@ -80,7 +81,7 @@
                         <!-- ============================================================== -->
                         <li>
                             <a class="profile-pic" href="#">
-                                <img src="img/profile.jpg" alt="user-img" width="36" class="img-circle"><span class="text-white font-medium">Michael Pantaleon</span></a>
+                                <img src="img/profile.jpg" alt="user-img" width="36" class="img-circle"><span id="nameTopScreen" class="text-white font-medium">Michael Pantaleon</span></a>
                         </li>
                         <!-- ============================================================== -->
                         <!-- User profile and search -->
@@ -264,28 +265,13 @@
                                 <table class="table text-nowrap">
                                     <thead>
                                         <tr>
-                                            <th class="border-top-0">#</th>
-                                            <th class="border-top-0">Activity</th>
-                                            <th class="border-top-0">Activity ID</th>
-                                            <th class="border-top-0">Date</th>
-                                            <th class="border-top-0">Time</th>
+                                            <th class="border-top-0">Course Code</th>
+                                            <th class="border-top-0">Release Date</th>
+                                            <th class="border-top-0">Due Date</th>
+                                            <th class="border-top-0">Grade Weight</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Dynamic</td>
-                                            <td>Dynamic</td>
-                                            <td>Dynamic</td>
-                                            <td>Dynamic</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2</td>
-                                            <td>Dynamic</td>
-                                            <td>Dynamic</td>
-                                            <td>Dynamic</td>
-                                            <td>Dynamic</td>
-                                        </tr>
+                                    <tbody id="assignmentList">
                                     </tbody>
                                 </table>
                             </div>

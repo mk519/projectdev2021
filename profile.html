@@ -11,9 +11,10 @@
     <link rel="icon" type="image/png" sizes="16x16" href="#needslink">
     <!-- Custom CSS -->
    <link href="css/style.min.css" rel="stylesheet">
+   <script src="js/profile.js"></script>
 </head>
 
-<body>
+<body onload="onLoadProfile()">
     <!-- ============================================================== -->
     <!-- Preloader - style you can find in spinners.css -->
     <!-- ============================================================== -->
@@ -82,7 +83,7 @@
                         <!-- ============================================================== -->
                         <li>
                             <a class="profile-pic" href="#">
-                                <img src="img/profile.jpg" alt="user-img" width="36" class="img-circle"><span class="text-white font-medium">Michael Pantaleon</span></a>
+                                <img src="img/profile.jpg" alt="user-img" width="36" class="img-circle"><span id="nameTopScreen" class="text-white font-medium">Michael Pantaleon</span></a>
                         </li>
                         <!-- ============================================================== -->
                         <!-- User profile and search -->
@@ -186,38 +187,50 @@
                             <div class="card-body">
                                 <form class="form-horizontal form-material">
                                     <h4><b>User Profile</b></h4><br>
+
                                     <div class="form-group mb-4">
-                                        <label class="col-md-12 p-0">Full Name</label>
+                                        <label class="col-md-12 p-0">First Name</label>
                                         <div class="col-md-12 border-bottom p-0">
-                                            <input type="text" placeholder="Dynamic Data"
+                                            <input id="firstName" type="text"
                                                 class="form-control p-0 border-0"> </div>
                                     </div>
+
+                                    <div class="form-group mb-4">
+                                        <label class="col-md-12 p-0">Last Name</label>
+                                        <div class="col-md-12 border-bottom p-0">
+                                            <input id="lastName" type="text"
+                                                class="form-control p-0 border-0"> </div>
+                                    </div>
+
                                     <div class="form-group mb-4">
                                         <label class="col-md-12 p-0">Program Name</label>
                                         <div class="col-md-12 border-bottom p-0">
-                                            <input type="text" placeholder="Dynamic Data"
+                                            <input id="programName" type="text"
                                                 class="form-control p-0 border-0"> </div>
                                     </div>
+
                                     <div class="form-group mb-4">
                                         <label class="col-md-12 p-0">Name of School/Institution</label>
                                         <div class="col-md-12 border-bottom p-0">
-                                            <input type="text" placeholder="Dynamic Data"
+                                            <input id="schoolName" type="text"
                                                 class="form-control p-0 border-0"> </div>
                                     </div>
+
+                                    <div class="form-group mb-4">
+                                        <label class="col-md-12 p-0">Birth Date</label>
+                                        <div class="col-md-12 border-bottom p-0">
+                                            <input id="birthDate" type="text"
+                                                class="form-control p-0 border-0"> </div>
+                                    </div>
+
                                     <div class="form-group mb-4">
                                         <label for="example-email" class="col-md-12 p-0">Email</label>
                                         <div class="col-md-12 border-bottom p-0">
-                                            <input type="email" placeholder="Dynamic Data"
-                                                class="form-control p-0 border-0" name="example-email"
-                                                id="example-email">
+                                            <input id="frmEmail" type="email"
+                                                class="form-control p-0 border-0">
                                         </div>
                                     </div>
-                                    <div class="form-group mb-4">
-                                        <label class="col-md-12 p-0">Password</label>
-                                        <div class="col-md-12 border-bottom p-0">
-                                            <input type="password" value="password" class="form-control p-0 border-0">
-                                        </div>
-                                    </div>
+
                                     <div class="form-group mb-4">
                                         <div class="col-sm-12">
                                             <button class="btn btn-success">Update Profile</button>
@@ -237,13 +250,14 @@
                                     <div class="form-group mb-4">
                                         <label class="col-md-12 p-0">Wake Time</label>
                                         <div class="col-md-12 border-bottom p-0">
-                                            <input type="text" placeholder="Time"
+                                            <input id="weekdayTime" type="text"
                                                 class="form-control p-0 border-0"> </div>
                                     </div>
+
                                     <div class="form-group mb-4">
-                                        <label class="col-md-12 p-0">Sleep Time</label>
+                                        <label class="col-md-12 p-0">Hours of Sleep</label>
                                         <div class="col-md-12 border-bottom p-0">
-                                            <input type="text" placeholder="Time"
+                                            <input id="weekdayHours" type="text"
                                                 class="form-control p-0 border-0"> </div>
                                     </div>
                                     <div class="form-group mb-4">
@@ -265,13 +279,13 @@
                                     <div class="form-group mb-4">
                                         <label class="col-md-12 p-0">Wake Time</label>
                                         <div class="col-md-12 border-bottom p-0">
-                                            <input type="text" placeholder="Time"
+                                            <input id="weekendTime" type="text"
                                                 class="form-control p-0 border-0"> </div>
                                     </div>
                                     <div class="form-group mb-4">
-                                        <label class="col-md-12 p-0">Sleep Time</label>
+                                        <label class="col-md-12 p-0">Hours of Sleep</label>
                                         <div class="col-md-12 border-bottom p-0">
-                                            <input type="text" placeholder="Time"
+                                            <input id="weekendHours" type="text"
                                                 class="form-control p-0 border-0"> </div>
                                     </div>
                                     <div class="form-group mb-4">
