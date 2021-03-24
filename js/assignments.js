@@ -1,9 +1,9 @@
-function onLoadSchedule() {
+function onLoadAssignment() {
     var userData = JSON.parse(sessionStorage.getItem("userdata"));
     var user = new User();
     user.populateWithJson(userData);
     document.getElementById("nameTopScreen").innerHTML = user.firstName + " " + user.lastName;
-    HttpGetPageLoadRequest("https://collegem820210207221016.azurewebsites.net/api/Class/User/" + user.userId)
+    HttpGetPageLoadRequest("https://collegem820210207221016.azurewebsites.net/api/Assignment/User/" + user.userId)
 }
 
 class User {
@@ -64,60 +64,63 @@ class Class {
         this.saturday = userJson.saturday;
         this.sunday = userJson.sunday;
     }
-
-    createChartHTML() {
-        var dtStart = new Date(Date.parse(this.startTime));
-        var dtEnd = new Date(Date.parse(this.endTime));
-        var startHours = updateHoursMonth(dtStart.getHours());
-        var startMins = updateMins(dtStart.getMinutes());
-        var endHours = updateHoursMonth(dtEnd.getHours());
-        var endMins = updateMins(dtEnd.getMinutes());
-
-        var daysOfWeek = "";
-        if(this.monday){
-            daysOfWeek += "Mon "
-        }
-        if(this.tuesday){
-            daysOfWeek += "Tue "
-        }
-        if(this.wednesday){
-            daysOfWeek += "Wed "
-        }
-        if(this.thursday){
-            daysOfWeek += "Thu "
-        }
-        if(this.friday){
-            daysOfWeek += "Fri "
-        }
-        if(this.saturday){
-            daysOfWeek += "Sat "
-        }
-        if(this.sunday){
-            daysOfWeek += "Sun "
-        }
-
-
-        var courseCode = "<td>" + this.courseCode + "</td>";
-        var courseName = "<td>" + this.className + "</td>";
-        var tmStart = "<td>" + startHours + ":" + startMins + "</td>";
-        var tmEnd = "<td>" + endHours + ":" + endMins + "</td>";
-        var days = "<td>" + daysOfWeek + "</td>";
-        return "<tr>" + courseCode + courseName + tmStart + tmEnd + days + "</tr>"
-    }
 }
 
-function updateMins(mins){
-    if(mins == 0){
+class Assignment {
+    constructor() {
+        this.assignmentId = null;
+        this.userId = null;
+        this.termId = null;
+        this.classId = null;
+        this.releaseDate = null;
+        this.dueDate = null;
+        this.gradeWeight = null;
+        this.hoursToComplete = null;
+    }
+
+    populateWithJson(userJson) {
+        this.assignmentId = userJson.assignmentId;
+        this.userId = userJson.userId;
+        this.termId = userJson.termId;
+        this.classId = userJson.classId;
+        this.releaseDate = userJson.releaseDate;
+        this.dueDate = userJson.dueDate;
+        this.gradeWeight = userJson.gradeWeight;
+        this.hoursToComplete = userJson.hoursToComplete;
+    }
+
+    createChartHTML(courseCode) {
+        var dtRelease = new Date(Date.parse(this.releaseDate));
+        var dtDue = new Date(Date.parse(this.dueDate));
+
+        var releaseMonth = updateHoursMonth(dtRelease.getMonth() + 1);
+        var releaseDay = updateHoursMonth(dtRelease.getDate());
+        var dueMonth = updateHoursMonth(dtDue.getMonth() + 1);
+        var dueDay = updateHoursMonth(dtDue.getDate());
+
+        var courseCode = "<td>" + courseCode + "</td>";
+        var releaseDate = "<td>" + dtRelease.getFullYear() + "-" + releaseMonth + "-" + releaseDay + "</td>";
+        var dueDate = "<td>" + dtDue.getFullYear() + "-" + dueMonth + "-" + dueDay + "</td>";
+        var gradeWeight = "<td>" + this.gradeWeight + "</td>";
+
+        return "<tr>" + courseCode + releaseDate + dueDate + gradeWeight + "</tr>"
+    }
+
+
+}
+
+function updateMins(mins) {
+    if (mins == 0) {
         return "00";
-    }else{
+    } else {
         return mins;
     }
 }
 
-function updateHoursMonth(hours){
-    if(hours <= 9){
+function updateHoursMonth(hours) {
+    if (hours <= 9) {
         return "0" + hours;
-    }else{
+    } else {
         return hours;
     }
 }
@@ -140,15 +143,29 @@ function HttpGetPageLoadRequest(url) {
         })
         .then(dataJson => {
             console.log(dataJson)
-            classes = JSON.parse(JSON.stringify(dataJson));
-            for (c = 0; c < classes.length; c++) {
-                var _class = new Class();
-                _class.populateWithJson(classes[c]);
-                document.getElementById("classList").innerHTML += _class.createChartHTML();
+            assignments = JSON.parse(JSON.stringify(dataJson));
+            var userData = JSON.parse(sessionStorage.getItem("userdata"));
+            for (a = 0; a < assignments.length; a++) {
+                var assignment = new Assignment();
+                assignment.populateWithJson(assignments[a]);
+                document.getElementById("assignmentList").innerHTML += assignment.createChartHTML(getCourseCode(assignment.classId, userData));
             }
         })
         .catch(err => {
             if (err === "server") return
             console.log(err)
         })
+}
+
+function getCourseCode(classId, userData){
+    for (t = 0; t < userData.terms.length; t++) {
+        for (c = 0; c < userData.terms[t].classes.length; c++) {
+            var _class = new Class();
+                _class.populateWithJson(userData.terms[t].classes[c]);
+                if(_class.classId == classId){
+                    return _class.courseCode;
+                }
+        }
+    }
+    return "null";
 }

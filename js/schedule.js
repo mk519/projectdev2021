@@ -3,12 +3,7 @@ function onLoadSchedule() {
     var user = new User();
     user.populateWithJson(userData);
     document.getElementById("nameTopScreen").innerHTML = user.firstName + " " + user.lastName;
-
-    for (s = 0; s < userData.scheduleItems.length; s++) {
-        var item = new ScheduleItem();
-        item.populateWithJson(userData.scheduleItems[s]);
-        document.getElementById("eventList").innerHTML += item.createChartHTML();
-    }
+    HttpGetPageLoadRequest("https://collegem820210207221016.azurewebsites.net/api/Schedule/" + user.userId)
 }
 
 
@@ -85,4 +80,35 @@ function updateHoursMonth(hours){
     }else{
         return hours;
     }
+}
+
+function HttpGetPageLoadRequest(url) {
+    fetch(url, {
+        credentials: "same-origin",
+        mode: "cors",
+        method: "get",
+        headers: { "Content-Type": "application/json" }
+    })
+        .then(resp => {
+            if (resp.status === 200) {
+                console.log("Status: " + resp.status)
+                return resp.json()
+            } else {
+                console.log("Status: " + resp.status)
+                return Promise.reject("server")
+            }
+        })
+        .then(dataJson => {
+            console.log(dataJson)
+            response = JSON.parse(JSON.stringify(dataJson));
+            for (s = 0; s < response.schedule.length; s++) {
+                var item = new ScheduleItem();
+                item.populateWithJson(response.schedule[s]);
+                document.getElementById("eventList").innerHTML += item.createChartHTML();
+            }
+        })
+        .catch(err => {
+            if (err === "server") return
+            console.log(err)
+        })
 }
