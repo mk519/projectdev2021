@@ -102,8 +102,9 @@ class Assignment {
         var releaseDate = "<td>" + dtRelease.getFullYear() + "-" + releaseMonth + "-" + releaseDay + "</td>";
         var dueDate = "<td>" + dtDue.getFullYear() + "-" + dueMonth + "-" + dueDay + "</td>";
         var gradeWeight = "<td>" + this.gradeWeight + "</td>";
+        var btnDelete = "<td>" + createDeleteButton(this.assignmentId) + "</td>";
 
-        return "<tr>" + courseCode + releaseDate + dueDate + gradeWeight + "</tr>"
+        return "<tr>" + courseCode + releaseDate + dueDate + gradeWeight + btnDelete + "</tr>"
     }
 
 
@@ -191,4 +192,11 @@ function getCourseCode(classId, classes) {
         }
     }
     return "null";
+}
+
+function createDeleteButton(id){
+    var style = 'style="border: 2px solid black;background-color:#f44336;margin: 4px 2px;display: inline-block;text-align:center;font-size: 12px;text-decoration: none;border: none;color: white;padding: 4px 8px;'
+    var onclick = 'onclick="TODO(this.id)"'
+    var id = ' id="'+id+'" '
+    return '<button '+ id + style + onclick +'type="button" >Delete</button>';
 }
