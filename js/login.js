@@ -13,7 +13,7 @@ function LoginOnClick() {
 
         const login = new Login(user, pass);
         HttpPostRequest(login, "https://collegem820210207221016.azurewebsites.net/api/User/login");
-    }else{
+    } else {
         console.error("Empty Login Info");
     }
 }
@@ -60,5 +60,18 @@ function HttpPostRequest(dataObject, url) {
             if (err === "server") return
             console.log(err)
         })
-        document.getElementById("divSignIn").innerHTML = '<div class="loader"></div>';
+    document.getElementById("divSignIn").innerHTML = '<div class="loader"></div>';
+}
+
+function LoginOnLoad() {
+    // This only matters if the user came directly from the create account page.
+    var txtToDisplay = sessionStorage.getItem("txtAccountCreated");
+    var username = sessionStorage.getItem("uName");
+    if (txtToDisplay != undefined && txtToDisplay.length>0 && username != undefined && username.length>0) {
+        document.getElementById("txtUsername").value = username;
+        document.getElementById("errorMsg").innerHTML = txtToDisplay;
+        document.getElementById("errorMsg").style.color = "#006400";
+        sessionStorage.removeItem("txtAccountCreated");
+        sessionStorage.removeItem("uName");
+    }
 }

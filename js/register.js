@@ -48,6 +48,8 @@ function HttpPostRequest(dataObject, url) {
         })
         .then(dataJson => {
             console.log(dataJson)
+            sessionStorage.setItem("txtAccountCreated", "User account created. Please Login");
+            sessionStorage.setItem("uName", dataObject.username);
             window.location.href = './login.html';
         })
         .catch(err => {
@@ -129,8 +131,8 @@ function VerifyRegisterInput() {
         document.getElementById("lblFrmEmail").style.fontSize = "12px";
         inputVerified = false;
     }
-    if (password.length == 0 || password.length >= 40 || password.includes(")")) {
-        document.getElementById("lblPassword").innerHTML = "Password input invalid. Must have length 1-40, and not contain some special characters.";
+    if (password.length <=7 || password.length > 20 || password.includes(")")) {
+        document.getElementById("lblPassword").innerHTML = "Password input invalid. Must have length 8-20, and not contain some special characters.";
         document.getElementById("lblPassword").style.color = "red";
         document.getElementById("lblPassword").style.fontSize = "11px";
         inputVerified = false;
