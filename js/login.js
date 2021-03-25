@@ -36,9 +36,7 @@ function HttpPostRequest(dataObject, url) {
             }
         })
         .then(dataJson => {
-            console.log(dataJson)
             sessionStorage.setItem("userdata", JSON.stringify(dataJson));
-            dataReceived = JSON.parse(JSON.stringify(dataJson));
             window.location.href = './index.html';
         })
         .catch(err => {
