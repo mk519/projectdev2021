@@ -101,7 +101,7 @@ class Assignment {
         var courseCode = "<td>" + courseCode + "</td>";
         var releaseDate = "<td>" + dtRelease.getFullYear() + "-" + releaseMonth + "-" + releaseDay + "</td>";
         var dueDate = "<td>" + dtDue.getFullYear() + "-" + dueMonth + "-" + dueDay + "</td>";
-        var gradeWeight = "<td>" + this.gradeWeight + "</td>";
+        var gradeWeight = "<td>" + this.gradeWeight + "%</td>";
         var btnDelete = "<td>" + createDeleteButton(this.assignmentId) + "</td>";
 
         return "<tr>" + courseCode + releaseDate + dueDate + gradeWeight + btnDelete + "</tr>"
@@ -113,7 +113,10 @@ class Assignment {
 function updateMins(mins) {
     if (mins == 0) {
         return "00";
-    } else {
+    } else if (mins <= 9) {
+        return "0" + mins;
+    }
+    else {
         return mins;
     }
 }

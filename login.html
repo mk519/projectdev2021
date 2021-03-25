@@ -15,9 +15,31 @@
     <link href="css/style.css"
     rel="stylesheet">
     <script src="js/login.js"></script>
+    <style>
+        .loader {
+          border: 10px solid #f3f3f3;
+          border-radius: 50%;
+          border-top: 10px solid #02a2f8;
+          border-bottom: 10px solid #02a2f8;
+          width: 40px;
+          height: 40px;
+          -webkit-animation: spin 2s linear infinite;
+          animation: spin 2s linear infinite;
+        }
+        
+        @-webkit-keyframes spin {
+          0% { -webkit-transform: rotate(0deg); }
+          100% { -webkit-transform: rotate(360deg); }
+        }
+        
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+        </style>
 </head>
 
-<body>
+<body onload="LoginOnLoad()">
     <section>
 
         <div class="imgBx">
@@ -28,7 +50,7 @@
             <div class="formBx">
                 <h2>CollegeM8's Login</h2>
                 <form>
-
+                    <span id="errorMsg"></span>
                     <div class="inputBx">
                         <span>Username</span>
                         <input type="text" id="txtUsername" name="">
@@ -43,8 +65,8 @@
                         <label><input type="checkbox" name=""> Remember Me</label>
                     </div>
 
-                    <div class="inputBx">
-                        <input type="button" value="Sign in" onclick="LoginOnClick()" name="">
+                    <div id="divSignIn" class="inputBx">
+                        <input id="btnLogin" type="button" value="Sign in" onclick="LoginOnClick()" name=""></input>
                     </div>
 
                     <div class="inputBx">

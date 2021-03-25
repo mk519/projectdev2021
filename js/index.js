@@ -1,9 +1,9 @@
-function onLoadIndex() {  
+function onLoadIndex() {
     var userData = JSON.parse(sessionStorage.getItem("userdata"));
-    var user = new User(); 
+    var user = new User();
     user.populateWithJson(userData);
 
-    HttpGetPageLoadRequestUserExpand("https://collegem820210207221016.azurewebsites.net/api/User/" + user.userId +"?expand=true")
+    HttpGetPageLoadRequestUserExpand("https://collegem820210207221016.azurewebsites.net/api/User/" + user.userId + "?expand=true")
     HttpGetPageLoadRequestSchedule("https://collegem820210207221016.azurewebsites.net/api/Schedule/" + user.userId)
 }
 
@@ -50,14 +50,14 @@ class ScheduleItem {
     }
 
     createChartHTML() {
-        var dtStart =new Date(Date.parse(this.startTime));
-        var dtEnd =new Date(Date.parse(this.endTime));
+        var dtStart = new Date(Date.parse(this.startTime));
+        var dtEnd = new Date(Date.parse(this.endTime));
 
         var startHours = updateHoursMonth(dtStart.getHours());
         var startMins = updateMins(dtStart.getMinutes());
         var endHours = updateHoursMonth(dtEnd.getHours());
         var endMins = updateMins(dtEnd.getMinutes());
-        var startMonth = updateHoursMonth(dtStart.getMonth()+1);
+        var startMonth = updateHoursMonth(dtStart.getMonth() + 1);
         var startDay = updateHoursMonth(dtStart.getDate());
         var eventTitle = "<td>" + this.title + "</td>";
         var eventDate = "<td>" + dtStart.getFullYear() + "-" + startMonth + "-" + startDay + "</td>";
@@ -67,18 +67,21 @@ class ScheduleItem {
     }
 }
 
-function updateMins(mins){
-    if(mins == 0){
+function updateMins(mins) {
+    if (mins == 0) {
         return "00";
-    }else{
+    } else if (mins <= 9) {
+        return "0" + mins;
+    }
+    else {
         return mins;
     }
 }
 
-function updateHoursMonth(hours){
-    if(hours <= 9){
+function updateHoursMonth(hours) {
+    if (hours <= 9) {
         return "0" + hours;
-    }else{
+    } else {
         return hours;
     }
 }
@@ -103,11 +106,11 @@ function HttpGetPageLoadRequestUserExpand(url) {
             response = JSON.parse(JSON.stringify(dataJson));
             var user = new User();
             user.populateWithJson(response);
-        
+
             var numClasses = 0;
             var numExams = 0;
             var numAssignments = 0;
-        
+
             for (t = 0; t < response.terms.length; t++) {
                 for (c = 0; c < response.terms[t].classes.length; c++) {
                     numClasses++;
