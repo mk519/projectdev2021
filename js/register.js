@@ -43,6 +43,7 @@ function HttpPostRequest(dataObject, url) {
                 return resp.json()
             } else {
                 console.log("Status: " + resp.status)
+                document.getElementById("divRegisterBtn").innerHTML = '<input type="button" value="Register" onclick="CreateUserOnClick()" name="">';
                 return Promise.reject("server")
             }
         })
@@ -56,6 +57,7 @@ function HttpPostRequest(dataObject, url) {
             if (err === "server") return
             console.log(err)
         })
+    document.getElementById("divRegisterBtn").innerHTML = '<div class="loader"></div>';
 }
 
 function VerifyRegisterInput() {
@@ -131,7 +133,7 @@ function VerifyRegisterInput() {
         document.getElementById("lblFrmEmail").style.fontSize = "12px";
         inputVerified = false;
     }
-    if (password.length <=7 || password.length > 20 || password.includes(")")) {
+    if (password.length <= 7 || password.length > 20 || password.includes(")")) {
         document.getElementById("lblPassword").innerHTML = "Password input invalid. Must have length 8-20, and not contain some special characters.";
         document.getElementById("lblPassword").style.color = "red";
         document.getElementById("lblPassword").style.fontSize = "11px";
