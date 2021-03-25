@@ -52,7 +52,10 @@ class User {
 function updateMins(mins) {
     if (mins == 0) {
         return "00";
-    } else {
+    } else if (mins <= 9) {
+        return "0" + mins;
+    }
+    else {
         return mins;
     }
 }
