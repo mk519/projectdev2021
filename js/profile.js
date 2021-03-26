@@ -145,20 +145,20 @@ function SendPostSleepData() {
     var weekdayHours = document.getElementById("weekdayHours").value;
     var weekendTime = document.getElementById("weekendTime").value;
     var weekendHours = document.getElementById("weekendHours").value;
-
-    var datetimePrefix = "0001-01-01T";
-    var datetimeSuffix = ":00";
-
-    var fullWeekdayTime = datetimePrefix + updateHoursMonth(parseInt(weekdayTime.split(":")[0])) + ":" + updateMins(parseInt(weekdayTime.split(":")[1])) + datetimeSuffix;
-    var fullWeekendTime = datetimePrefix + updateHoursMonth(parseInt(weekendTime.split(":")[0])) + ":" + updateMins(parseInt(weekendTime.split(":")[1])) + datetimeSuffix;
-
     var sleep = new Sleep();
     sleep.userId = user.userId
     sleep.hoursWeekday = parseInt(weekdayHours);
     sleep.hoursWeekend = parseInt(weekendHours);
-    sleep.wakeTimeWeekday = fullWeekdayTime;
-    sleep.wakeTimeWeekend = fullWeekendTime;
+    sleep.wakeTimeWeekday = TimeToDateTimeStr(weekdayTime);
+    sleep.wakeTimeWeekend = TimeToDateTimeStr(weekendTime);
     HttpRequest(sleep, "post", PostSleepResponse, URL_BASE + "/api/Sleep");
+}
+
+function TimeToDateTimeStr(timeStr){
+    var datetimePrefix = "0001-01-01T";
+    var datetimeSuffix = ":00";
+    var timeAsDateTime = datetimePrefix + updateHoursMonth(parseInt(timeStr.split(":")[0])) + ":" + updateMins(parseInt(timeStr.split(":")[1])) + datetimeSuffix;
+    return timeAsDateTime;
 }
 
 function CreateOrUpdateSleepInfo(response){
