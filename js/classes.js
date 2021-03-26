@@ -171,23 +171,19 @@ function VerifyAddAssignmentInput() {
     var hoursToComplete = document.getElementById("").value;
 
     if (!IsValidDate(releaseDate)) {
-        document.getElementById(releaseDateLblId).innerHTML = "Release Date input invalid. Use format YYYY-MM-DD";
-        document.getElementById(releaseDateLblId).style.color = "red";
+        UpdateErrorMessage(releaseDateLblId, "Release Date input invalid. Use format YYYY-MM-DD");
         inputVerified = false;
     }
     if (!IsValidDate(dueDateDate)) {
-        document.getElementById(dueDateLblId).innerHTML = "Due Date input invalid. Use format YYYY-MM-DD";
-        document.getElementById(dueDateLblId).style.color = "red";
+        UpdateErrorMessage(dueDateLblId, "Due Date input invalid. Use format YYYY-MM-DD");
         inputVerified = false;
     }
     if (!IsValidGradeWeight(gradeWeight)) {
-        document.getElementById(gradeWeightLblId).innerHTML = "Grade Weight must be 0-100";
-        document.getElementById(gradeWeightLblId).style.color = "red";
+        UpdateErrorMessage(gradeWeightLblId, "Grade Weight must be 0-100");
         inputVerified = false;
     }
     if (!IsValidHoursToComplete(hoursToComplete)) {
-        document.getElementById(hoursToCompleteLblId).innerHTML = "Hours to Complete must be between 0-100";
-        document.getElementById(hoursToCompleteLblId).style.color = "red";
+        UpdateErrorMessage(hoursToCompleteLblId, "Hours to Complete must be between 0-100");
         inputVerified = false;
     }
     return inputVerified;
@@ -209,18 +205,15 @@ function VerifyAddExamInput() {
     var endTime = document.getElementById("").value;
 
     if (!IsValidDate(examDate)) {
-        document.getElementById(examDateLblId).innerHTML = "Exam Date input invalid. Use format YYYY-MM-DD";
-        document.getElementById(examDateLblId).style.color = "red";
+        UpdateErrorMessage(examDateLblId, "Exam Date input invalid. Use format YYYY-MM-DD");
         inputVerified = false;
     }
     if (!IsValidTime(startTime)) {
-        document.getElementById(startTimeLblId).innerHTML = "Start Time input invalid. Use format hh:mm";
-        document.getElementById(startTimeLblId).style.color = "red";
+        UpdateErrorMessage(startTimeLblId, "Start Time input invalid. Use format hh:mm");
         inputVerified = false;
     }
     if (!IsValidTime(endTime)) {
-        document.getElementById(endTimeLblId).innerHTML = "End Time input invalid. Use format hh:mm";
-        document.getElementById(endTimeLblId).style.color = "red";
+        UpdateErrorMessage(endTimeLblId, "End Time input invalid. Use format hh:mm");
         inputVerified = false;
     }
     return inputVerified;
@@ -229,6 +222,11 @@ function VerifyAddExamInput() {
 function ResetAddExamLabels() {
     document.getElementById("").innerHTML = "Todo";
     document.getElementById("").style.color = "#607d8b";
+}
+
+function UpdateErrorMessage(label, message) {
+    document.getElementById(label).innerHTML = message;
+    document.getElementById(label).style.color = "red";
 }
 
 function IsValidHoursToComplete(hours){
@@ -315,4 +313,3 @@ function HttpRequest(dataObject, method, afterResponseFunction, url) {
             console.log(err)
         })
 }
-
