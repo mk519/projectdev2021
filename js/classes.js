@@ -138,24 +138,32 @@ function CreateClassesRows(classes){
 }
 
 function createAddAssignmentButton(classId){
-    var style = 'style="border: 2px solid black;background-color:#008CBA;margin: 4px 2px;display: inline-block;text-align:center;font-size: 10px;text-decoration: none;border: none;color: white;padding: 4px 8px;'
-    var onclick = 'onclick="TODO(this.name)"'
+    var style = ' style="border: 2px solid black;background-color:#008CBA;margin: 4px 2px;display: inline-block;text-align:center;font-size: 10px;text-decoration: none;border: none;color: white;padding: 4px 8px;" '
+    var onclick = ' onclick="TODO(this.name)" '
     var name = ' name="'+classId+'" '
-    return '<button ' + name + style + onclick +'type="button" >Add Assignment</button>';
+    return '<button ' + name + style + onclick +' type="button" >Add Assignment</button>';
 }
 
 function createAddExamButton(classId){
-    var style = 'style="border: 2px solid black;background-color:#008CBA;margin: 4px 2px;display: inline-block;text-align:center;font-size: 10px;text-decoration: none;border: none;color: white;padding: 4px 8px;'
-    var onclick = 'onclick="TODO(this.name)"'
+    var style = 'style="border: 2px solid black;background-color:#008CBA;margin: 4px 2px;display: inline-block;text-align:center;font-size: 10px;text-decoration: none;border: none;color: white;padding: 4px 8px;" '
+    var onclick = ' onclick="TODO(this.name)" '
     var name = ' name="'+classId+'" '
-    return '<button ' + name + style + onclick +'type="button" >Add Exam</button>';
+    return '<button ' + name + style + onclick +' type="button" >Add Exam</button>';
 }
 
 function createDeleteButton(classId){
-    var style = 'style="border: 2px solid black;background-color:#f44336;margin: 4px 2px;display: inline-block;text-align:center;font-size: 10px;text-decoration: none;border: none;color: white;padding: 4px 8px;'
-    var onclick = 'onclick="TODO(this.name)"'
+    var style = ' style="border: 2px solid black;background-color:#f44336;margin: 4px 2px;display: inline-block;text-align:center;font-size: 10px;text-decoration: none;border: none;color: white;padding: 4px 8px;" '
+    var onclick = ' onclick="DeleteClassOnClick(this.name)" '
     var name = ' name="'+classId+'" '
-    return '<button '+ name + style + onclick +'type="button" >Delete</button>';
+    return '<button '+ name + style + onclick +' type="button" >Delete</button>';
+}
+
+function DeleteClassOnClick(classId){
+    HttpRequest(null, "delete", RefreshPage, URL_BASE + "/api/Class/" + classId);
+}
+
+function RefreshPage(response){
+    location.reload();
 }
 
 function VerifyAddAssignmentInput() {

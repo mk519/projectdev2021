@@ -146,7 +146,7 @@ function AfterGettingClasses(classes) {
     var userData = JSON.parse(sessionStorage.getItem("userdata"));
     var user = new User();
     user.populateWithJson(userData);
-    HttpRequest(null, "get", CreateExamRows, "https://collegem820210207221016.azurewebsites.net/api/Exam/User/" + user.userId);
+    HttpRequest(null, "get", CreateExamRows, URL_BASE + "/api/Exam/User/" + user.userId);
 }
 
 function getCourseCode(classId, classes) {
@@ -161,10 +161,18 @@ function getCourseCode(classId, classes) {
 }
 
 function createDeleteButton(id) {
-    var style = 'style="border: 2px solid black;background-color:#f44336;margin: 4px 2px;display: inline-block;text-align:center;font-size: 12px;text-decoration: none;border: none;color: white;padding: 4px 8px;'
-    var onclick = 'onclick="TODO(this.name)"'
+    var style = ' style="border: 2px solid black;background-color:#f44336;margin: 4px 2px;display: inline-block;text-align:center;font-size: 12px;text-decoration: none;border: none;color: white;padding: 4px 8px;" '
+    var onclick = ' onclick="DeleteExamOnClick(this.name)" '
     var name = ' name="' + id + '" '
     return '<button ' + name + style + onclick + 'type="button" >Delete</button>';
+}
+
+function DeleteExamOnClick(examId){
+    HttpRequest(null, "delete", RefreshPage, URL_BASE + "/api/Exam/" + examId);
+}
+
+function RefreshPage(response){
+    location.reload();
 }
 
 function UpdateStoredUserExams(exams) {
