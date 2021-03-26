@@ -1,9 +1,10 @@
+const URL_BASE = "https://collegem820210207221016.azurewebsites.net";
 function onLoadExam() {
     var userData = JSON.parse(sessionStorage.getItem("userdata"));
     var user = new User();
     user.populateWithJson(userData);
     document.getElementById("nameTopScreen").innerHTML = user.firstName + " " + user.lastName;
-    HttpGetPageLoadRequestClasses("https://collegem820210207221016.azurewebsites.net/api/Class/User/" + user.userId, user.userId)
+    HttpRequest(null, "get", AfterGettingClasses, URL_BASE + "/api/Class/User/" + user.userId);
 }
 
 class User {
@@ -130,60 +131,22 @@ function updateHoursMonth(hours) {
     }
 }
 
-function HttpGetPageLoadRequest(url, classes) {
-    fetch(url, {
-        credentials: "same-origin",
-        mode: "cors",
-        method: "get",
-        headers: { "Content-Type": "application/json" }
-    })
-        .then(resp => {
-            if (resp.status === 200) {
-                console.log("Status: " + resp.status)
-                return resp.json()
-            } else {
-                console.log("Status: " + resp.status)
-                return Promise.reject("server")
-            }
-        })
-        .then(dataJson => {
-            exams = JSON.parse(JSON.stringify(dataJson));
-            for (e = 0; e < exams.length; e++) {
-                var exam = new Exam();
-                exam.populateWithJson(exams[e]);
-                document.getElementById("examList").innerHTML += exam.createChartHTML(getCourseCode(exam.classId, classes));
-            }
-        })
-        .catch(err => {
-            if (err === "server") return
-            console.log(err)
-        })
+function CreateExamRows(exams) {
+    var userData = JSON.parse(sessionStorage.getItem("userdata"));
+    var classes = userData.classes;
+    for (e = 0; e < exams.length; e++) {
+        var exam = new Exam();
+        exam.populateWithJson(exams[e]);
+        document.getElementById("examList").innerHTML += exam.createChartHTML(getCourseCode(exam.classId, classes));
+    }
 }
 
-function HttpGetPageLoadRequestClasses(url, userId) {
-    fetch(url, {
-        credentials: "same-origin",
-        mode: "cors",
-        method: "get",
-        headers: { "Content-Type": "application/json" }
-    })
-        .then(resp => {
-            if (resp.status === 200) {
-                console.log("Status: " + resp.status)
-                return resp.json()
-            } else {
-                console.log("Status: " + resp.status)
-                return Promise.reject("server")
-            }
-        })
-        .then(dataJson => {
-            classes = JSON.parse(JSON.stringify(dataJson));
-            HttpGetPageLoadRequest("https://collegem820210207221016.azurewebsites.net/api/Exam/User/" + userId, classes)
-        })
-        .catch(err => {
-            if (err === "server") return
-            console.log(err)
-        })
+function AfterGettingClasses(classes) {
+    UpdateStoredUserExams(classes);
+    var userData = JSON.parse(sessionStorage.getItem("userdata"));
+    var user = new User();
+    user.populateWithJson(userData);
+    HttpRequest(null, "get", CreateExamRows, "https://collegem820210207221016.azurewebsites.net/api/Exam/User/" + user.userId);
 }
 
 function getCourseCode(classId, classes) {
@@ -197,9 +160,48 @@ function getCourseCode(classId, classes) {
     return "null";
 }
 
-function createDeleteButton(id){
+function createDeleteButton(id) {
     var style = 'style="border: 2px solid black;background-color:#f44336;margin: 4px 2px;display: inline-block;text-align:center;font-size: 12px;text-decoration: none;border: none;color: white;padding: 4px 8px;'
-    var onclick = 'onclick="TODO(this.id)"'
-    var id = ' id="'+id+'" '
-    return '<button '+ id + style + onclick +'type="button" >Delete</button>';
+    var onclick = 'onclick="TODO(this.name)"'
+    var name = ' name="' + id + '" '
+    return '<button ' + name + style + onclick + 'type="button" >Delete</button>';
+}
+
+function UpdateStoredUserExams(exams) {
+    var userData = JSON.parse(sessionStorage.getItem("userdata"));
+    userData.exams = exams;
+    sessionStorage.setItem("userdata", JSON.stringify(userData));
+}
+
+function HttpRequest(dataObject, method, afterResponseFunction, url) {
+    var dataToSend = null;
+    if (dataObject != null) {
+        dataToSend = JSON.stringify(dataObject)
+    }
+    fetch(url, {
+        credentials: "same-origin",
+        mode: "cors",
+        method: method,
+        headers: { "Content-Type": "application/json" },
+        body: dataToSend
+    })
+        .then(resp => {
+            if (resp.status === 200) {
+                console.log("Status: " + resp.status)
+                return resp.json()
+            } else {
+                console.log("Status: " + resp.status)
+                return Promise.reject("server")
+            }
+        })
+        .then(dataJson => {
+            response = JSON.parse(JSON.stringify(dataJson));
+            if (afterResponseFunction != null) {
+                afterResponseFunction(response);
+            }
+        })
+        .catch(err => {
+            if (err === "server") return
+            console.log(err)
+        })
 }

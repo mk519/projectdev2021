@@ -1,10 +1,10 @@
+const URL_BASE = "https://collegem820210207221016.azurewebsites.net";
 function onLoadIndex() {
     var userData = JSON.parse(sessionStorage.getItem("userdata"));
     var user = new User();
     user.populateWithJson(userData);
-
-    HttpGetPageLoadRequestUserExpand("https://collegem820210207221016.azurewebsites.net/api/User/" + user.userId + "?expand=true")
-    HttpGetPageLoadRequestSchedule("https://collegem820210207221016.azurewebsites.net/api/Schedule/" + user.userId)
+    HttpRequest(null, "get", CreateScheduleRows, URL_BASE + "/api/Schedule/" + user.userId);
+    HttpRequest(null, "get", UpdatePageCounts, URL_BASE + "/api/User/" + user.userId + "?expand=true");
 }
 
 
@@ -86,59 +86,48 @@ function updateHoursMonth(hours) {
     }
 }
 
-function HttpGetPageLoadRequestUserExpand(url) {
-    fetch(url, {
-        credentials: "same-origin",
-        mode: "cors",
-        method: "get",
-        headers: { "Content-Type": "application/json" }
-    })
-        .then(resp => {
-            if (resp.status === 200) {
-                console.log("Status: " + resp.status)
-                return resp.json()
-            } else {
-                console.log("Status: " + resp.status)
-                return Promise.reject("server")
+function UpdatePageCounts(response) {
+    var user = new User();
+    user.populateWithJson(response);
+    var numClasses = 0;
+    var numExams = 0;
+    var numAssignments = 0;
+    for (t = 0; t < response.terms.length; t++) {
+        for (c = 0; c < response.terms[t].classes.length; c++) {
+            numClasses++;
+            for (e = 0; e < response.terms[t].classes[c].exams.length; e++) {
+                numExams++;
             }
-        })
-        .then(dataJson => {
-            response = JSON.parse(JSON.stringify(dataJson));
-            var user = new User();
-            user.populateWithJson(response);
-
-            var numClasses = 0;
-            var numExams = 0;
-            var numAssignments = 0;
-
-            for (t = 0; t < response.terms.length; t++) {
-                for (c = 0; c < response.terms[t].classes.length; c++) {
-                    numClasses++;
-                    for (e = 0; e < response.terms[t].classes[c].exams.length; e++) {
-                        numExams++;
-                    }
-                    for (a = 0; a < response.terms[t].classes[c].assignments.length; a++) {
-                        numAssignments++;
-                    }
-                }
+            for (a = 0; a < response.terms[t].classes[c].assignments.length; a++) {
+                numAssignments++;
             }
-            document.getElementById("nameTopScreen").innerHTML = user.firstName + " " + user.lastName;
-            document.getElementById("totalCourses").innerHTML = numClasses;
-            document.getElementById("totalAssignments").innerHTML = numExams;
-            document.getElementById("totalExams").innerHTML = numAssignments;
-        })
-        .catch(err => {
-            if (err === "server") return
-            console.log(err)
-        })
+        }
+    }
+    document.getElementById("nameTopScreen").innerHTML = user.firstName + " " + user.lastName;
+    document.getElementById("totalCourses").innerHTML = numClasses;
+    document.getElementById("totalAssignments").innerHTML = numExams;
+    document.getElementById("totalExams").innerHTML = numAssignments;
 }
 
-function HttpGetPageLoadRequestSchedule(url) {
+function CreateScheduleRows(response) {
+    for (s = 0; s < response.schedule.length; s++) {
+        var item = new ScheduleItem();
+        item.populateWithJson(response.schedule[s]);
+        document.getElementById("eventList").innerHTML += item.createChartHTML();
+    }
+}
+
+function HttpRequest(dataObject, method, afterResponseFunction, url) {
+    var dataToSend = null;
+    if (dataObject != null) {
+        dataToSend = JSON.stringify(dataObject)
+    }
     fetch(url, {
         credentials: "same-origin",
         mode: "cors",
-        method: "get",
-        headers: { "Content-Type": "application/json" }
+        method: method,
+        headers: { "Content-Type": "application/json" },
+        body: dataToSend
     })
         .then(resp => {
             if (resp.status === 200) {
@@ -151,10 +140,8 @@ function HttpGetPageLoadRequestSchedule(url) {
         })
         .then(dataJson => {
             response = JSON.parse(JSON.stringify(dataJson));
-            for (s = 0; s < response.schedule.length; s++) {
-                var item = new ScheduleItem();
-                item.populateWithJson(response.schedule[s]);
-                document.getElementById("eventList").innerHTML += item.createChartHTML();
+            if (afterResponseFunction != null) {
+                afterResponseFunction(response);
             }
         })
         .catch(err => {

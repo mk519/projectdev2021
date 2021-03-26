@@ -1,9 +1,10 @@
+const URL_BASE = "https://collegem820210207221016.azurewebsites.net";
 function onLoadSchedule() {
     var userData = JSON.parse(sessionStorage.getItem("userdata"));
     var user = new User();
     user.populateWithJson(userData);
     document.getElementById("nameTopScreen").innerHTML = user.firstName + " " + user.lastName;
-    HttpGetPageLoadRequest("https://collegem820210207221016.azurewebsites.net/api/Class/User/" + user.userId)
+    HttpRequest(null, "get", CreateClassesRows, URL_BASE + "/api/Class/User/" + user.userId);
 }
 
 class User {
@@ -128,12 +129,171 @@ function updateHoursMonth(hours){
     }
 }
 
-function HttpGetPageLoadRequest(url) {
+function CreateClassesRows(classes){
+    for (c = 0; c < classes.length; c++) {
+        var _class = new Class();
+        _class.populateWithJson(classes[c]);
+        document.getElementById("classList").innerHTML += _class.createChartHTML();
+    }
+}
+
+function createAddAssignmentButton(classId){
+    var style = 'style="border: 2px solid black;background-color:#008CBA;margin: 4px 2px;display: inline-block;text-align:center;font-size: 10px;text-decoration: none;border: none;color: white;padding: 4px 8px;'
+    var onclick = 'onclick="TODO(this.name)"'
+    var name = ' name="'+classId+'" '
+    return '<button ' + name + style + onclick +'type="button" >Add Assignment</button>';
+}
+
+function createAddExamButton(classId){
+    var style = 'style="border: 2px solid black;background-color:#008CBA;margin: 4px 2px;display: inline-block;text-align:center;font-size: 10px;text-decoration: none;border: none;color: white;padding: 4px 8px;'
+    var onclick = 'onclick="TODO(this.name)"'
+    var name = ' name="'+classId+'" '
+    return '<button ' + name + style + onclick +'type="button" >Add Exam</button>';
+}
+
+function createDeleteButton(classId){
+    var style = 'style="border: 2px solid black;background-color:#f44336;margin: 4px 2px;display: inline-block;text-align:center;font-size: 10px;text-decoration: none;border: none;color: white;padding: 4px 8px;'
+    var onclick = 'onclick="TODO(this.name)"'
+    var name = ' name="'+classId+'" '
+    return '<button '+ name + style + onclick +'type="button" >Delete</button>';
+}
+
+function VerifyAddAssignmentInput() {
+    inputVerified = true;
+    ResetAddAssignmentLabels();
+    var releaseDateLblId = "";
+    var releaseDate = document.getElementById("").value;
+    var dueDateLblId = "";
+    var dueDateDate = document.getElementById("").value;
+    var gradeWeightLblId = "";
+    var gradeWeight = document.getElementById("").value;
+    var hoursToCompleteLblId = "";
+    var hoursToComplete = document.getElementById("").value;
+
+    if (!IsValidDate(releaseDate)) {
+        document.getElementById(releaseDateLblId).innerHTML = "Release Date input invalid. Use format YYYY-MM-DD";
+        document.getElementById(releaseDateLblId).style.color = "red";
+        inputVerified = false;
+    }
+    if (!IsValidDate(dueDateDate)) {
+        document.getElementById(dueDateLblId).innerHTML = "Due Date input invalid. Use format YYYY-MM-DD";
+        document.getElementById(dueDateLblId).style.color = "red";
+        inputVerified = false;
+    }
+    if (!IsValidGradeWeight(gradeWeight)) {
+        document.getElementById(gradeWeightLblId).innerHTML = "Grade Weight must be 0-100";
+        document.getElementById(gradeWeightLblId).style.color = "red";
+        inputVerified = false;
+    }
+    if (!IsValidHoursToComplete(hoursToComplete)) {
+        document.getElementById(hoursToCompleteLblId).innerHTML = "Hours to Complete must be between 0-100";
+        document.getElementById(hoursToCompleteLblId).style.color = "red";
+        inputVerified = false;
+    }
+    return inputVerified;
+}
+
+function ResetAddAssignmentLabels() {
+    document.getElementById("").innerHTML = "Todo";
+    document.getElementById("").style.color = "#607d8b";
+}
+
+function VerifyAddExamInput() {
+    inputVerified = true;
+    ResetAddExamLabels();
+    var examDateLblId = "";
+    var examDate = document.getElementById("").value;
+    var startTimeLblId = "";
+    var startTime = document.getElementById("").value;
+    var endTimeLblId = "";
+    var endTime = document.getElementById("").value;
+
+    if (!IsValidDate(examDate)) {
+        document.getElementById(examDateLblId).innerHTML = "Exam Date input invalid. Use format YYYY-MM-DD";
+        document.getElementById(examDateLblId).style.color = "red";
+        inputVerified = false;
+    }
+    if (!IsValidTime(startTime)) {
+        document.getElementById(startTimeLblId).innerHTML = "Start Time input invalid. Use format hh:mm";
+        document.getElementById(startTimeLblId).style.color = "red";
+        inputVerified = false;
+    }
+    if (!IsValidTime(endTime)) {
+        document.getElementById(endTimeLblId).innerHTML = "End Time input invalid. Use format hh:mm";
+        document.getElementById(endTimeLblId).style.color = "red";
+        inputVerified = false;
+    }
+    return inputVerified;
+}
+
+function ResetAddExamLabels() {
+    document.getElementById("").innerHTML = "Todo";
+    document.getElementById("").style.color = "#607d8b";
+}
+
+function IsValidHoursToComplete(hours){
+    var isValid = true;
+    if(isNaN(hours) || parseFloat(hours) <= 0 || parseFloat(hours) >= 100){
+        isValid = false;
+    }
+    return isValid;
+}
+
+function IsValidGradeWeight(gradeWeight){
+    var isValid = true;
+    if(isNaN(gradeWeight) || parseInt(gradeWeight) < 0 || parseInt(gradeWeight) > 100){
+        isValid = false;
+    }
+    return isValid;
+}
+
+function IsValidTime(time) {
+    var isTimeValid = true;
+    if (!time.includes(":") || time.split(":").length != 2) {
+        isTimeValid = false;
+    } else {
+        var times = time.split(":");
+        var hours = times[0];
+        var mins = times[1];
+        if (isNaN(hours) || isNaN(mins) || parseInt(hours) < 0 || parseInt(hours) >= 24 || parseInt(mins) < 0 || parseInt(mins) >= 60) {
+            isTimeValid = false;
+        }
+    }
+    return isTimeValid
+}
+
+function IsValidDate(dateStr) {
+    var isValidDate = true;
+    if (dateStr.split("-").length != 3) {
+        isValidDate = false;
+    } else {
+        var splitDate = dateStr.split("-");
+        var year = splitDate[0];
+        var month = splitDate[1];
+        var day = splitDate[2];
+        if (isNaN(year) || isNaN(month) || isNaN(day)) {
+            isValidDate = false;
+        } else {
+            var date = new Date(Date.parse(dateStr));
+            if (isNaN(date)) {
+                isValidDate = false;
+            }
+        }
+    }
+    return isValidDate;
+}
+
+function HttpRequest(dataObject, method, afterResponseFunction, url) {
+    var dataToSend = null;
+    if (dataObject != null) {
+        dataToSend = JSON.stringify(dataObject)
+    }
     fetch(url, {
         credentials: "same-origin",
         mode: "cors",
-        method: "get",
-        headers: { "Content-Type": "application/json" }
+        method: method,
+        headers: { "Content-Type": "application/json" },
+        body: dataToSend
     })
         .then(resp => {
             if (resp.status === 200) {
@@ -145,11 +305,9 @@ function HttpGetPageLoadRequest(url) {
             }
         })
         .then(dataJson => {
-            classes = JSON.parse(JSON.stringify(dataJson));
-            for (c = 0; c < classes.length; c++) {
-                var _class = new Class();
-                _class.populateWithJson(classes[c]);
-                document.getElementById("classList").innerHTML += _class.createChartHTML();
+            response = JSON.parse(JSON.stringify(dataJson));
+            if (afterResponseFunction != null) {
+                afterResponseFunction(response);
             }
         })
         .catch(err => {
@@ -158,23 +316,3 @@ function HttpGetPageLoadRequest(url) {
         })
 }
 
-function createAddAssignmentButton(classId){
-    var style = 'style="border: 2px solid black;background-color:#008CBA;margin: 4px 2px;display: inline-block;text-align:center;font-size: 10px;text-decoration: none;border: none;color: white;padding: 4px 8px;'
-    var onclick = 'onclick="TODO(this.id)"'
-    var id = ' id="'+classId+'" '
-    return '<button ' + id + style + onclick +'type="button" >Add Assignment</button>';
-}
-
-function createAddExamButton(classId){
-    var style = 'style="border: 2px solid black;background-color:#008CBA;margin: 4px 2px;display: inline-block;text-align:center;font-size: 10px;text-decoration: none;border: none;color: white;padding: 4px 8px;'
-    var onclick = 'onclick="TODO(this.id)"'
-    var id = ' id="'+classId+'" '
-    return '<button ' + id + style + onclick +'type="button" >Add Exam</button>';
-}
-
-function createDeleteButton(classId){
-    var style = 'style="border: 2px solid black;background-color:#f44336;margin: 4px 2px;display: inline-block;text-align:center;font-size: 10px;text-decoration: none;border: none;color: white;padding: 4px 8px;'
-    var onclick = 'onclick="TODO(this.id)"'
-    var id = ' id="'+classId+'" '
-    return '<button '+ id + style + onclick +'type="button" >Delete</button>';
-}

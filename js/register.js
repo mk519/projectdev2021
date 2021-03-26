@@ -1,4 +1,4 @@
-
+const URL_BASE = "https://collegem820210207221016.azurewebsites.net";
 function CreateUserOnClick() {
     if (VerifyRegisterInput()) {
         var user = new User();
@@ -10,7 +10,7 @@ function CreateUserOnClick() {
         user.emailAddress = document.getElementById("emailAddress").value;
         user.birthDate = document.getElementById("birthDate").value;
         user.password = document.getElementById("password").value;
-        HttpPostRequest(user, "https://collegem820210207221016.azurewebsites.net/api/User");
+        HttpPostRequest(user, URL_BASE + "/api/User");
     }
 }
 

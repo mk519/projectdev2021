@@ -1,3 +1,4 @@
+const URL_BASE = "https://collegem820210207221016.azurewebsites.net";
 class Login {
     constructor(username, password) {
         this.username = username;
@@ -12,7 +13,7 @@ function LoginOnClick() {
         var pass = document.getElementById("txtPassword").value;
 
         const login = new Login(user, pass);
-        HttpPostRequest(login, "https://collegem820210207221016.azurewebsites.net/api/User/login");
+        HttpPostRequest(login, URL_BASE + "/api/User/login");
     } else {
         console.error("Empty Login Info");
     }
