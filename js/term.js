@@ -157,23 +157,19 @@ function VerifyAddClassInput() {
     var endTime = document.getElementById("").value;
 
     if (!IsValidTime(startTime)) {
-        document.getElementById(startTimeLblId).innerHTML = "Start Time input invalid. Use format hh:mm";
-        document.getElementById(startTimeLblId).style.color = "red";
+        UpdateErrorMessage(startTimeLblId, "Start Time input invalid. Use format hh:mm");
         inputVerified = false;
     }
     if (!IsValidTime(endTime)) {
-        document.getElementById(endTimeLblId).innerHTML = "Start Time input invalid. Use format hh:mm";
-        document.getElementById(endTimeLblId).style.color = "red";
+        UpdateErrorMessage(endTimeLblId, "Start Time input invalid. Use format hh:mm");
         inputVerified = false;
     }
     if (IsValidInputString(courseCode, 1, 20)) {
-        document.getElementById(courseCodeLblId).innerHTML = "Course Code must be 1-20 characters & not some special characters";
-        document.getElementById(courseCodeLblId).style.color = "red";
+        UpdateErrorMessage(courseCodeLblId, "Course Code must be 1-20 characters & not some special characters");
         inputVerified = false;
     }
     if (IsValidInputString(courseName, 1, 40)) {
-        document.getElementById(courseNameLblId).innerHTML = "Course Code must be 1-40 characters & not some special characters";
-        document.getElementById(courseNameLblId).style.color = "red";
+        UpdateErrorMessage(courseNameLblId, "Course Code must be 1-40 characters & not some special characters");
         inputVerified = false;
     }
     return inputVerified;
@@ -193,20 +189,17 @@ function VerifyAddTermInput() {
     var endDate = document.getElementById("").value;
 
     if (!IsValidDate(startDate)) {
-        document.getElementById(startDateLblId).innerHTML = "Start Date input invalid. Use format YYYY-MM-DD";
-        document.getElementById(startDateLblId).style.color = "red";
+        UpdateErrorMessage(startDateLblId, "Start Date input invalid. Use format YYYY-MM-DD");
         inputVerified = false;
     }
 
     if (!IsValidDate(endDate)) {
-        document.getElementById(endDateLblId).innerHTML = "End Date input invalid. Use format YYYY-MM-DD";
-        document.getElementById(endDateLblId).style.color = "red";
+        UpdateErrorMessage(endDateLblId, "End Date input invalid. Use format YYYY-MM-DD");
         inputVerified = false;
     }
 
-    if (inputVerified && IsFirstDateAfter(startDate, endDate)) { // Both can be parsed as dates at this point
-        document.getElementById(startDateLblId).innerHTML = "Start Date must be before End Date";
-        document.getElementById(startDateLblId).style.color = "red";
+    if (inputVerified && IsFirstDateAfter(startDate, endDate)) {
+        UpdateErrorMessage(startDateLblId, "Start Date must be before End Date");
         inputVerified = false;
     }
     return inputVerified;
@@ -215,6 +208,11 @@ function VerifyAddTermInput() {
 function ResetAddTermLabels() {
     document.getElementById("").innerHTML = "Todo";
     document.getElementById("").style.color = "#607d8b";
+}
+
+function UpdateErrorMessage(label, message) {
+    document.getElementById(label).innerHTML = message;
+    document.getElementById(label).style.color = "red";
 }
 
 function IsValidDate(dateStr) {

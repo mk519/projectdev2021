@@ -48,7 +48,6 @@ function HttpPostRequest(dataObject, url) {
             }
         })
         .then(dataJson => {
-            console.log(dataJson)
             sessionStorage.setItem("txtAccountCreated", "User account created. Please Login");
             sessionStorage.setItem("uName", dataObject.username);
             window.location.href = './login.html';
@@ -72,71 +71,36 @@ function VerifyRegisterInput() {
     var formEmail = document.getElementById("emailAddress").value;
     var password = document.getElementById("password").value;
 
-    if (username.length == 0 || username.length >= 40 || username.includes(")")) {
-        document.getElementById("lblUsername").innerHTML = "Username input invalid. Must have length 1-40, and not contain some special characters.";
-        document.getElementById("lblUsername").style.color = "red";
-        document.getElementById("lblUsername").style.fontSize = "11px";
+    if (!IsValidInputString(username, 1, 40)) {
+        UpdateErrorMessage("lblUsername", "Username input invalid. Must have length 1-40, and not contain some special characters.");
         inputVerified = false;
     }
-    if (firstName.length == 0 || firstName.length >= 40 || firstName.includes(")")) {
-        document.getElementById("lblFirstName").innerHTML = "First Name input invalid. Must have length 1-40, and not contain some special characters.";
-        document.getElementById("lblFirstName").style.color = "red";
-        document.getElementById("lblFirstName").style.fontSize = "11px";
+    if (!IsValidInputString(firstName, 1, 40)) {
+        UpdateErrorMessage("lblFirstName", "First Name input invalid. Must have length 1-40, and not contain some special characters.");
         inputVerified = false;
     }
-    if (lastName.length == 0 || lastName.length >= 40 || lastName.includes(")")) {
-        document.getElementById("lblLastName").innerHTML = "Last Name input invalid. Must have length 1-40, and not contain some special characters.";
-        document.getElementById("lblLastName").style.color = "red";
-        document.getElementById("lblLastName").style.fontSize = "11px";
+    if (!IsValidInputString(lastName, 1, 40)) {
+        UpdateErrorMessage("lblLastName", "Last Name input invalid. Must have length 1-40, and not contain some special characters.");
         inputVerified = false;
     }
-    if (programName.length == 0 || programName.length >= 40 || programName.includes(")")) {
-        document.getElementById("lblProgramName").innerHTML = "Program Name input invalid. Must have length 1-40, and not contain some special characters.";
-        document.getElementById("lblProgramName").style.color = "red";
-        document.getElementById("lblProgramName").style.fontSize = "11px";
+    if (!IsValidInputString(programName, 1, 40)) {
+        UpdateErrorMessage("lblProgramName", "Program Name input invalid. Must have length 1-40, and not contain some special characters.");
         inputVerified = false;
     }
-    if (schoolName.length == 0 || schoolName.length >= 40 || schoolName.includes(")")) {
-        document.getElementById("lblSchoolName").innerHTML = "School Name input invalid. Must have length 1-40, and not contain some special characters.";
-        document.getElementById("lblSchoolName").style.color = "red";
-        document.getElementById("lblSchoolName").style.fontSize = "11px";
+    if (!IsValidInputString(schoolName, 1, 40)) {
+        UpdateErrorMessage("lblSchoolName", "School Name input invalid. Must have length 1-40, and not contain some special characters.");
         inputVerified = false;
     }
-    if (birthDate.split("-").length != 3) {
-        document.getElementById("lblBirthDate").innerHTML = "Birth Date input invalid. Use format YYYY-MM-DD";
-        document.getElementById("lblBirthDate").style.color = "red";
-        document.getElementById("lblBirthDate").style.fontSize = "11px";
+    if (!IsValidDate(birthDate)) {
+        UpdateErrorMessage("lblBirthDate", "Birth Date input invalid. Use format YYYY-MM-DD");
         inputVerified = false;
-    } else {
-        var splitDate = birthDate.split("-");
-        var year = splitDate[0];
-        var month = splitDate[1];
-        var day = splitDate[2];
-        if (isNaN(year) || isNaN(month) || isNaN(day)) {
-            document.getElementById("lblBirthDate").innerHTML = " Birth Date input invalid. Use format YYYY-MM-DD";
-            document.getElementById("lblBirthDate").style.color = "red";
-            document.getElementById("lblBirthDate").style.fontSize = "11px";
-            inputVerified = false;
-        } else {
-            var date = new Date(Date.parse(birthDate));
-            if (isNaN(date)) {
-                document.getElementById("lblBirthDate").innerHTML = " Birth Date input invalid. Use format YYYY-MM-DD";
-                document.getElementById("lblBirthDate").style.color = "red";
-                document.getElementById("lblBirthDate").style.fontSize = "11px";
-                inputVerified = false;
-            }
-        }
     }
     if (!validateEmail(formEmail)) {
-        document.getElementById("lblFrmEmail").innerHTML = "Email input invalid. Must be valid email.";
-        document.getElementById("lblFrmEmail").style.color = "red";
-        document.getElementById("lblFrmEmail").style.fontSize = "12px";
+        UpdateErrorMessage("lblFrmEmail", "Email input invalid. Must be valid email.");
         inputVerified = false;
     }
-    if (password.length <= 7 || password.length > 20 || password.includes(")")) {
-        document.getElementById("lblPassword").innerHTML = "Password input invalid. Must have length 8-20, and not contain some special characters.";
-        document.getElementById("lblPassword").style.color = "red";
-        document.getElementById("lblPassword").style.fontSize = "11px";
+    if (!IsValidPasswordString(password, 8, 20)) {
+        UpdateErrorMessage("lblPassword", "Password input invalid. Must have length 8-20.");
         inputVerified = false;
     }
     return inputVerified;
@@ -169,8 +133,52 @@ function ResetUserLabels() {
     document.getElementById("lblPassword").style.fontSize = "16px";
 }
 
+function UpdateErrorMessage(label, message) {
+    document.getElementById(label).innerHTML = message;
+    document.getElementById(label).style.color = "red";
+    document.getElementById(label).style.fontSize = "11px";
+}
+
 function validateEmail(email) {
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
+}
+
+function IsValidDate(dateStr) {
+    var isValidDate = true;
+    if (dateStr.split("-").length != 3) {
+        isValidDate = false;
+    } else {
+        var splitDate = dateStr.split("-");
+        var year = splitDate[0];
+        var month = splitDate[1];
+        var day = splitDate[2];
+        if (isNaN(year) || isNaN(month) || isNaN(day)) {
+            isValidDate = false;
+        } else {
+            var date = new Date(Date.parse(dateStr));
+            if (isNaN(date)) {
+                isValidDate = false;
+            }
+        }
+    }
+    return isValidDate;
+}
+
+function IsValidInputString(inputStr, minLength, maxLength) {
+    const pattern = /^[a-zA-Z0-9 :()-]*$/;
+    var isValid = true;
+    if (inputStr.length < minLength || inputStr.length >= maxLength || !pattern.test(inputStr)) {
+        isValid = false;
+    }
+    return isValid;
+}
+
+function IsValidPasswordString(inputStr, minLength, maxLength) {
+    var isValid = true;
+    if (inputStr.length < minLength || inputStr.length >= maxLength) {
+        isValid = false;
+    }
+    return isValid;
 }
 

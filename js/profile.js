@@ -216,33 +216,27 @@ function VerifyUserDataInput() {
     var formEmail = document.getElementById("frmEmail").value;
 
     if (!IsValidInputString(firstName, 1, 40)) {
-        document.getElementById("lblFirstName").innerHTML = "Input invalid. Cannot be empty, longer than 40 character, or contain some special characters.";
-        document.getElementById("lblFirstName").style.color = "red";
+        UpdateErrorMessage("lblFirstName", "Input invalid. Cannot be empty, longer than 40 character, or contain some special characters.");
         inputVerified = false;
     }
     if (!IsValidInputString(lastName, 1, 40)) {
-        document.getElementById("lblLastName").innerHTML = "Input invalid. Cannot be empty, longer than 40 character, or contain some special characters.";
-        document.getElementById("lblLastName").style.color = "red";
+        UpdateErrorMessage("lblLastName", "Input invalid. Cannot be empty, longer than 40 character, or contain some special characters.");
         inputVerified = false;
     }
     if (!IsValidInputString(programName, 1, 40)) {
-        document.getElementById("lblProgramName").innerHTML = "Input invalid. Cannot be empty, longer than 40 character, or contain some special characters.";
-        document.getElementById("lblProgramName").style.color = "red";
+        UpdateErrorMessage("lblProgramName", "Input invalid. Cannot be empty, longer than 40 character, or contain some special characters.");
         inputVerified = false;
     }
     if (!IsValidInputString(schoolName, 1, 40)) {
-        document.getElementById("lblSchoolName").innerHTML = "Input invalid. Cannot be empty, longer than 40 character, or contain some special characters.";
-        document.getElementById("lblSchoolName").style.color = "red";
+        UpdateErrorMessage("lblSchoolName", "Input invalid. Cannot be empty, longer than 40 character, or contain some special characters.");
         inputVerified = false;
     }
     if (!IsValidDate(birthDate)) {
-        document.getElementById("lblBirthDate").innerHTML = "Input invalid. Use format YYYY-MM-DD";
-        document.getElementById("lblBirthDate").style.color = "red";
+        UpdateErrorMessage("lblBirthDate", "Input invalid. Use format YYYY-MM-DD");
         inputVerified = false;
     }
     if (!validateEmail(formEmail)) {
-        document.getElementById("lblFrmEmail").innerHTML = "Input invalid. Must be valid email.";
-        document.getElementById("lblFrmEmail").style.color = "red";
+        UpdateErrorMessage("lblFrmEmail", "Input invalid. Must be valid email.");
         inputVerified = false;
     }
     var userData = JSON.parse(sessionStorage.getItem("userdata"));
@@ -336,23 +330,19 @@ function VerifySleepInput() {
     var weekendHours = document.getElementById("weekendHours").value;
 
     if (IsValidSleepLength(weekdayHours, 12)) {
-        document.getElementById("lblWeekdayHours").innerHTML = "Input invalid. Choose a number 1-12";
-        document.getElementById("lblWeekdayHours").style.color = "red";
+        UpdateErrorMessage("lblWeekdayHours", "Input invalid. Choose a number 1-12");
         inputVerified = false;
     }
     if (IsValidSleepLength(weekendHours, 12)) {
-        document.getElementById("lblWeekendHours").innerHTML = "Input invalid. Choose a number 1-12";
-        document.getElementById("lblWeekendHours").style.color = "red";
+        UpdateErrorMessage("lblWeekendHours", "Input invalid. Choose a number 1-12");
         inputVerified = false;
     }
     if (!IsValidTime(weekdayTime)) {
-        document.getElementById("lblWeekdayTime").innerHTML = "Input invalid. Enter Format hh:mm";
-        document.getElementById("lblWeekdayTime").style.color = "red";
+        UpdateErrorMessage("lblWeekdayTime", "Input invalid. Enter Format hh:mm");
         inputVerified = false;
     }
     if (!IsValidTime(weekendTime)) {
-        document.getElementById("lblWeekendTime").innerHTML = "Input invalid. Enter Format hh:mm";
-        document.getElementById("lblWeekendTime").style.color = "red";
+        UpdateErrorMessage("lblWeekendTime", "Input invalid. Enter Format hh:mm");
         inputVerified = false;
     }
     // Case where no data has been changed
@@ -420,6 +410,11 @@ function AfterSleepDataUpdate(response) {
 
 function PostSleepResponse() {
     SleepLabelsGreen();
+}
+
+function UpdateErrorMessage(label, message) {
+    document.getElementById(label).innerHTML = message;
+    document.getElementById(label).style.color = "red";
 }
 
 function HttpRequest(dataObject, method, afterResponseFunction, url) {
