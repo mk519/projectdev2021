@@ -106,12 +106,12 @@ function createDeleteButton(id) { // term id
     return '<button ' + name + style + onclick + 'type="button" >Delete</button>';
 }
 
-function DeleteTermOnClick(termId){
-    console.log("Termid: "+termId);
+function DeleteTermOnClick(termId) {
+    console.log("Termid: " + termId);
     HttpRequest(null, "delete", RefreshPage, URL_BASE + "/api/Term/" + termId);
 }
 
-function RefreshPage(response){
+function RefreshPage(response) {
     location.reload();
 }
 
@@ -189,13 +189,24 @@ function ResetAddClassLabels() {
     document.getElementById("").style.color = "#607d8b";
 }
 
-function VerifyAddTermInput() {
+function AddTermOnClick() {
+    if (IsValidAddTermInput()) {
+        var userData = JSON.parse(sessionStorage.getItem("userdata"));
+        var term = new Term();
+        term.userId = userData.userId;
+        term.startDate = document.getElementById("startDate").value;
+        term.endDate = document.getElementById("endDate").value;
+        HttpRequest(term, "post", CloseAddTermModal, URL_BASE + "/api/Term");
+    }
+}
+
+function IsValidAddTermInput() {
     inputVerified = true;
     ResetAddTermLabels();
-    var startDateLblId = "";
-    var startDate = document.getElementById("").value;
-    var endDateLblId = "";
-    var endDate = document.getElementById("").value;
+    var startDateLblId = "lblStartDate";
+    var startDate = document.getElementById("startDate").value;
+    var endDateLblId = "lblEndDate";
+    var endDate = document.getElementById("endDate").value;
 
     if (!IsValidDate(startDate)) {
         UpdateErrorMessage(startDateLblId, "Start Date input invalid. Use format YYYY-MM-DD");
@@ -215,8 +226,10 @@ function VerifyAddTermInput() {
 }
 
 function ResetAddTermLabels() {
-    document.getElementById("").innerHTML = "Todo";
-    document.getElementById("").style.color = "#607d8b";
+    document.getElementById("lblStartDate").innerHTML = "Start Date";
+    document.getElementById("lblStartDate").style.color = "#607d8b";
+    document.getElementById("lblEndDate").innerHTML = "End Date";
+    document.getElementById("lblEndDate").style.color = "#607d8b";
 }
 
 function UpdateErrorMessage(label, message) {
@@ -309,4 +322,23 @@ function HttpRequest(dataObject, method, afterResponseFunction, url) {
             if (err === "server") return
             console.log(err)
         })
+}
+
+
+
+function OpenAddTermModal() {
+    // Get the modal
+    var modal = document.getElementById("modalAddTerm");
+    modal.style.display = "block";
+}
+
+function CloseAddTermModal(response = null) {
+    // Get the modal
+    var modal = document.getElementById("modalAddTerm");
+    modal.style.display = "none";
+    if (response != null) {
+        document.getElementById("startDate").value = "";
+        document.getElementById("endDate").value = "";
+        location.reload();
+    }
 }
