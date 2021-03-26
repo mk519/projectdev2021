@@ -200,11 +200,18 @@ function ResetAddAssignmentLabels() {
 function VerifyAddExamInput() {
     inputVerified = true;
     ResetAddExamLabels();
+    var examDateLblId = "";
+    var examDate = document.getElementById("").value;
     var startTimeLblId = "";
     var startTime = document.getElementById("").value;
     var endTimeLblId = "";
     var endTime = document.getElementById("").value;
 
+    if (!IsValidDate(examDate)) {
+        document.getElementById(examDateLblId).innerHTML = "Exam Date input invalid. Use format YYYY-MM-DD";
+        document.getElementById(examDateLblId).style.color = "red";
+        inputVerified = false;
+    }
     if (!IsValidTime(startTime)) {
         document.getElementById(startTimeLblId).innerHTML = "Start Time input invalid. Use format hh:mm";
         document.getElementById(startTimeLblId).style.color = "red";
