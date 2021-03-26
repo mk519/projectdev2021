@@ -70,3 +70,13 @@ section .contentBx .formBx .inputBx span {
   font-size: 16px;
   letter-spacing: 1px;
 }
+
+section .contentBx .formBx .checkboxBx label {
+  font-size: 16px;
+  margin-bottom: 5px;
+  display: inline-block;
+  color: #607d8b;
+  font-weight: 300;
+  font-size: 16px;
+  letter-spacing: 1px;
+}

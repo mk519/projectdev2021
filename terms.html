@@ -322,7 +322,6 @@
     <!-- End Wrapper -->
     <!-- ============================================================== -->
     <div id="modalAddTerm" class="modal">
-
         <!-- Modal content -->
         <div class="modal-content">
             <section class="modalSection">
@@ -353,7 +352,83 @@
                 </div>
             </section>
         </div>
+    </div>
+    <div id="modalAddClass" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <section class="modalSection">
+                <div class="contentBx">
+                    <div class="formBx">
+                        <h2>Add A Class</h2>
+                        <form>
+                            <div class="inputBx">
+                                <span id="lblCourseCode">Course Code</span>
+                                <input id="courseCode" type="text" name="">
+                            </div>
 
+                            <div class="inputBx">
+                                <span id="lblClassName">Class Name</span>
+                                <input id="className" type="text" name="">
+                            </div>
+
+                            <div class="inputBx">
+                                <span id="lblStartTime">Start Time</span>
+                                <input id="startTime" placeholder="hh:mm" type="text" name="">
+                            </div>
+
+                            <div class="inputBx">
+                                <span id="lblEndTime">End Time</span>
+                                <input id="endTime" placeholder="hh:mm" type="text" name="">
+                            </div>
+
+                            <div class="checkboxBx">
+                                <input id="chkMonday" type="checkbox">
+                                <label for="chkMonday"> Monday</label>
+                            </div>
+
+                            <div class="checkboxBx">
+                                <input id="chkTuesday" type="checkbox">
+                                <label for="chkTuesday"> Tuesday</label>
+                            </div>
+
+                            <div class="checkboxBx">
+                                <input id="chkWednesday" type="checkbox">
+                                <label for="chkWednesday"> Wednesday</label>
+                            </div>
+
+                            <div class="checkboxBx">
+                                <input id="chkThursday" type="checkbox">
+                                <label for="chkThursday"> Thursday</label>
+                            </div>
+
+                            <div class="checkboxBx">
+                                <input id="chkFriday" type="checkbox">
+                                <label for="chkFriday"> Friday</label>
+                            </div>
+
+                            <div class="checkboxBx">
+                                <input id="chkSaturday" type="checkbox">
+                                <label for="chkSaturday"> Saturday</label>
+                            </div>
+
+                            <div class="checkboxBx">
+                                <input id="chkSunday" type="checkbox">
+                                <label for="chkSunday"> Sunday</label>
+                            </div>
+
+                            <div id="divRegisterBtn" class="inputBx">
+                                <input id="addClassConfirm" name="addClassConfirm" type="button" value="Add Class" onclick="AddClassOnClick(this.name)" >
+                            </div>
+
+                            <div id="divRegisterBtn" class="inputBx">
+                                <input type="button" value="Cancel" onclick="CloseAddClassModal()" >
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </div>
     </div>
     <!-- ============================================================== -->
     <!-- All Jquery -->
