@@ -92,22 +92,31 @@ function CreateTermColumns(responseJson) {
     }
 }
 
-function createAddClassButton(id) {
-    var style = 'style="border: 2px solid black;background-color:#008CBA;margin: 4px 2px;display: inline-block;text-align:center;font-size: 12px;text-decoration: none;border: none;color: white;padding: 4px 8px;"'
+function createAddClassButton(id) { //term id
+    var style = ' style="border: 2px solid black;background-color:#008CBA;margin: 4px 2px;display: inline-block;text-align:center;font-size: 12px;text-decoration: none;border: none;color: white;padding: 4px 8px;" '
     var onclick = 'onclick="TODO(this.name)"'
     var name = ' name="' + id + '" '
     return '<button ' + name + style + onclick + 'type="button" >Add Class</button>';
 }
 
-function createDeleteButton(id) {
-    var style = 'style="border: 2px solid black;background-color:#f44336;margin: 4px 2px;display: inline-block;text-align:center;font-size: 12px;text-decoration: none;border: none;color: white;padding: 4px 8px;"'
-    var onclick = 'onclick="TODO(this.name)"'
-    var name = ' id="' + id + '" '
+function createDeleteButton(id) { // term id
+    var style = ' style="border: 2px solid black;background-color:#f44336;margin: 4px 2px;display: inline-block;text-align:center;font-size: 12px;text-decoration: none;border: none;color: white;padding: 4px 8px;" '
+    var onclick = ' onclick="DeleteTermOnClick(this.name)" '
+    var name = ' name="' + id + '" '
     return '<button ' + name + style + onclick + 'type="button" >Delete</button>';
 }
 
-function createScheduleButton(id) {
-    var style = 'style="border: 2px solid black;background-color:#008CBA;margin: 4px 2px;display: inline-block;text-align:center;font-size: 14px;text-decoration: none;border: none;color: white;padding: 4px 8px;"'
+function DeleteTermOnClick(termId){
+    console.log("Termid: "+termId);
+    HttpRequest(null, "delete", AfterDelete, URL_BASE + "/api/Term/" + termId);
+}
+
+function AfterDelete(response){
+    location.reload();
+}
+
+function createScheduleButton(id) { // term id
+    var style = ' style="border: 2px solid black;background-color:#008CBA;margin: 4px 2px;display: inline-block;text-align:center;font-size: 14px;text-decoration: none;border: none;color: white;padding: 4px 8px;" '
     var onclick = ' onclick="GenerateScheduleOnClick(this.name)" '
     var name = ' name="' + id + '" '
     return '<button ' + name + style + onclick + ' type="button" >Generate Schedule</button>';
