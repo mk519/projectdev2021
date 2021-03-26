@@ -157,6 +157,124 @@ function createDeleteButton(classId){
     return '<button '+ name + style + onclick +'type="button" >Delete</button>';
 }
 
+function VerifyAddAssignmentInput() {
+    inputVerified = true;
+    ResetAddAssignmentLabels();
+    var releaseDateLblId = "";
+    var releaseDate = document.getElementById("").value;
+    var dueDateLblId = "";
+    var dueDateDate = document.getElementById("").value;
+    var gradeWeightLblId = "";
+    var gradeWeight = document.getElementById("").value;
+    var hoursToCompleteLblId = "";
+    var hoursToComplete = document.getElementById("").value;
+
+    if (!IsValidDate(releaseDate)) {
+        document.getElementById(releaseDateLblId).innerHTML = "Release Date input invalid. Use format YYYY-MM-DD";
+        document.getElementById(releaseDateLblId).style.color = "red";
+        inputVerified = false;
+    }
+    if (!IsValidDate(dueDateDate)) {
+        document.getElementById(dueDateLblId).innerHTML = "Due Date input invalid. Use format YYYY-MM-DD";
+        document.getElementById(dueDateLblId).style.color = "red";
+        inputVerified = false;
+    }
+    if (!IsValidGradeWeight(gradeWeight)) {
+        document.getElementById(gradeWeightLblId).innerHTML = "Grade Weight must be 0-100";
+        document.getElementById(gradeWeightLblId).style.color = "red";
+        inputVerified = false;
+    }
+    if (!IsValidHoursToComplete(hoursToComplete)) {
+        document.getElementById(hoursToCompleteLblId).innerHTML = "Hours to Complete must be between 0-100";
+        document.getElementById(hoursToCompleteLblId).style.color = "red";
+        inputVerified = false;
+    }
+    return inputVerified;
+}
+
+function ResetAddAssignmentLabels() {
+    document.getElementById("").innerHTML = "Todo";
+    document.getElementById("").style.color = "#607d8b";
+}
+
+function VerifyAddExamInput() {
+    inputVerified = true;
+    ResetAddExamLabels();
+    var startTimeLblId = "";
+    var startTime = document.getElementById("").value;
+    var endTimeLblId = "";
+    var endTime = document.getElementById("").value;
+
+    if (!IsValidTime(startTime)) {
+        document.getElementById(startTimeLblId).innerHTML = "Start Time input invalid. Use format hh:mm";
+        document.getElementById(startTimeLblId).style.color = "red";
+        inputVerified = false;
+    }
+    if (!IsValidTime(endTime)) {
+        document.getElementById(endTimeLblId).innerHTML = "End Time input invalid. Use format hh:mm";
+        document.getElementById(endTimeLblId).style.color = "red";
+        inputVerified = false;
+    }
+    return inputVerified;
+}
+
+function ResetAddExamLabels() {
+    document.getElementById("").innerHTML = "Todo";
+    document.getElementById("").style.color = "#607d8b";
+}
+
+function IsValidHoursToComplete(hours){
+    var isValid = true;
+    if(isNaN(hours) || parseFloat(hours) <= 0 || parseFloat(hours) >= 100){
+        isValid = false;
+    }
+    return isValid;
+}
+
+function IsValidGradeWeight(gradeWeight){
+    var isValid = true;
+    if(isNaN(gradeWeight) || parseInt(gradeWeight) < 0 || parseInt(gradeWeight) > 100){
+        isValid = false;
+    }
+    return isValid;
+}
+
+function IsValidTime(time) {
+    var isTimeValid = true;
+    if (!time.includes(":") || time.split(":").length != 2) {
+        isTimeValid = false;
+    } else {
+        var times = time.split(":");
+        var hours = times[0];
+        var mins = times[1];
+        if (isNaN(hours) || isNaN(mins) || parseInt(hours) < 0 || parseInt(hours) >= 24 || parseInt(mins) < 0 || parseInt(mins) >= 60) {
+            isTimeValid = false;
+        }
+    }
+    return isTimeValid
+}
+
+function IsValidDate(dateStr) {
+    var isValidDate = true;
+    if (dateStr.split("-").length != 3) {
+        isValidDate = false;
+    } else {
+        var splitDate = dateStr.split("-");
+        var year = splitDate[0];
+        var month = splitDate[1];
+        var day = splitDate[2];
+        if (isNaN(year) || isNaN(month) || isNaN(day)) {
+            isValidDate = false;
+        } else {
+            var date = new Date(Date.parse(dateStr));
+            if (isNaN(date)) {
+                isValidDate = false;
+            }
+        }
+    }
+    return isValidDate;
+}
+
 function HttpRequest(dataObject, method, afterResponseFunction, url) {
     var dataToSend = null;
     if (dataObject != null) {
@@ -189,3 +307,4 @@ function HttpRequest(dataObject, method, afterResponseFunction, url) {
             console.log(err)
         })
 }
+
