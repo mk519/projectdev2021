@@ -11,11 +11,11 @@ function LoginOnClick() {
         console.log("Login Sequence Started");
         var user = document.getElementById("txtUsername").value;
         var pass = document.getElementById("txtPassword").value;
-
+        StoreUsernameOnLoginClick(user); // Cookie
         const login = new Login(user, pass);
         HttpPostRequest(login, URL_BASE + "/api/User/login");
     } else {
-        console.error("Empty Login Info");
+        console.log("Empty Login Info");
     }
 }
 
@@ -28,6 +28,46 @@ function VerifyLoginInfo() {
     }
     return infoFilled;
 }
+
+function StoreUsernameOnLoginClick(username){ // From https://www.w3schools.com/js/js_cookies.asp
+    var isChecked = document.getElementById("loginCheck").checked;
+    if(isChecked){
+        setCookie("username", username, 30);
+    }else{
+        setCookie("username", username, -1); // -1 Deletes the cookie
+    }
+    
+}
+
+function RememberUsernameOnLoad(){
+    var username = getCookie("username");
+    if(username.length > 0){
+        document.getElementById("txtUsername").value = username;
+    }
+}
+
+function getCookie(cname) { // From https://www.w3schools.com/js/js_cookies.asp
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+      var c = ca[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
+  }
+
+  function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    var expires = "expires="+d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+  }
 
 function HttpPostRequest(dataObject, url) {
     const dataToSend = JSON.stringify(dataObject);
@@ -65,6 +105,8 @@ function HttpPostRequest(dataObject, url) {
 }
 
 function LoginOnLoad() {
+    RememberUsernameOnLoad();
+    
     // This only matters if the user came directly from the create account page.
     var txtToDisplay = sessionStorage.getItem("txtAccountCreated");
     var username = sessionStorage.getItem("uName");
