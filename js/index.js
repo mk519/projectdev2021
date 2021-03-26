@@ -1,9 +1,10 @@
+const URL_BASE = "https://collegem820210207221016.azurewebsites.net";
 function onLoadIndex() {
     var userData = JSON.parse(sessionStorage.getItem("userdata"));
     var user = new User();
     user.populateWithJson(userData);
-    HttpRequest(null, "get", CreateScheduleRows, "https://collegem820210207221016.azurewebsites.net/api/Schedule/" + user.userId);
-    HttpRequest(null, "get", UpdatePageCounts, "https://collegem820210207221016.azurewebsites.net/api/User/" + user.userId + "?expand=true");
+    HttpRequest(null, "get", CreateScheduleRows, URL_BASE + "/api/Schedule/" + user.userId);
+    HttpRequest(null, "get", UpdatePageCounts, URL_BASE + "/api/User/" + user.userId + "?expand=true");
 }
 
 

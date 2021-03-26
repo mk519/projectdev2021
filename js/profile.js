@@ -1,9 +1,10 @@
+const URL_BASE = "https://collegem820210207221016.azurewebsites.net";
 function onLoadProfile() {
     var userData = JSON.parse(sessionStorage.getItem("userdata"));
     var user = new User();
     user.populateWithJson(userData);
-    HttpRequest(null, "get", FillUserFormDetail, "https://collegem820210207221016.azurewebsites.net/api/User/" + user.userId);
-    HttpRequest(null, "get", FillSleepFormDetail, "https://collegem820210207221016.azurewebsites.net/api/Sleep/" + user.userId);
+    HttpRequest(null, "get", FillUserFormDetail, URL_BASE + "/api/User/" + user.userId);
+    HttpRequest(null, "get", FillSleepFormDetail, URL_BASE + "/api/Sleep/" + user.userId);
 }
 
 
@@ -108,7 +109,7 @@ function UpdateSleepDetailsOnClick() {
         var userData = JSON.parse(sessionStorage.getItem("userdata"));
         var user = new User();
         user.populateWithJson(userData);
-        HttpRequest(null, "get", CreateOrUpdateSleepInfo, "https://collegem820210207221016.azurewebsites.net/api/User/" + user.userId + "?expand=true");
+        HttpRequest(null, "get", CreateOrUpdateSleepInfo, URL_BASE + "/api/User/" + user.userId + "?expand=true");
     }
 }
 
@@ -133,7 +134,7 @@ function SendPutSleepData() {
     sleep.hoursWeekend = parseInt(weekendHours);
     sleep.wakeTimeWeekday = fullWeekdayTime;
     sleep.wakeTimeWeekend = fullWeekendTime;
-    HttpRequest(sleep, "put", AfterSleepDataUpdate, "https://collegem820210207221016.azurewebsites.net/api/Sleep");
+    HttpRequest(sleep, "put", AfterSleepDataUpdate, URL_BASE + "/api/Sleep");
 }
 
 function SendPostSleepData() {
@@ -157,7 +158,7 @@ function SendPostSleepData() {
     sleep.hoursWeekend = parseInt(weekendHours);
     sleep.wakeTimeWeekday = fullWeekdayTime;
     sleep.wakeTimeWeekend = fullWeekendTime;
-    HttpRequest(sleep, "post", PostSleepResponse, "https://collegem820210207221016.azurewebsites.net/api/Sleep");
+    HttpRequest(sleep, "post", PostSleepResponse, URL_BASE + "/api/Sleep");
 }
 
 function CreateOrUpdateSleepInfo(response){
@@ -187,12 +188,12 @@ function UpdateProfileOnClick() {
         newUser.schoolName = schoolName;
         newUser.birthDate = birthDate;
         newUser.emailAddress = formEmail;
-        HttpRequest(newUser, "put", GetUserStoredData, "https://collegem820210207221016.azurewebsites.net/api/User");
+        HttpRequest(newUser, "put", GetUserStoredData, URL_BASE + "/api/User");
     }
 }
 
 function GetUserStoredData(response) {
-    HttpRequest(null, "get", UpdateStoredUserData, "https://collegem820210207221016.azurewebsites.net/api/User/" + response.userId + "?expand=true");
+    HttpRequest(null, "get", UpdateStoredUserData, URL_BASE + "/api/User/" + response.userId + "?expand=true");
     UserLabelsGreen();
 }
 
@@ -413,7 +414,7 @@ function SleepLabelsGreen() {
 }
 
 function AfterSleepDataUpdate(response) {
-    HttpRequest(null, "get", GetUserStoredData, "https://collegem820210207221016.azurewebsites.net/api/User/" + response.userId + "?expand=true");
+    HttpRequest(null, "get", GetUserStoredData, URL_BASE + "/api/User/" + response.userId + "?expand=true");
     SleepLabelsGreen();
 }
 

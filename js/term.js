@@ -1,9 +1,10 @@
+const URL_BASE = "https://collegem820210207221016.azurewebsites.net";
 function onLoadSchedule() {
     var userData = JSON.parse(sessionStorage.getItem("userdata"));
     var user = new User();
     user.populateWithJson(userData);
     document.getElementById("nameTopScreen").innerHTML = user.firstName + " " + user.lastName;
-    HttpRequest(null, "get", CreateTermColumns, "https://collegem820210207221016.azurewebsites.net/api/Term/User/" + user.userId)
+    HttpRequest(null, "get", CreateTermColumns, URL_BASE + "/api/Term/User/" + user.userId)
 }
 
 class User {
@@ -113,7 +114,7 @@ function createScheduleButton(id) {
 }
 
 function GenerateScheduleOnClick(id) {
-    HttpRequest(null, "get", SetupGetSchedule, "https://collegem820210207221016.azurewebsites.net/api/Term/" + id);
+    HttpRequest(null, "get", SetupGetSchedule, URL_BASE + "/api/Term/" + id);
 }
 
 
@@ -140,7 +141,7 @@ function SetupGetSchedule(termResponse) {
     var endFullDate = dtEnd.getFullYear() + "-" + endMonth + "-" + endDay;
 
     var createSchedule = new CreateSchedule(term.userId, startFullDate, endFullDate);
-    HttpRequest(createSchedule, "post", null, "https://collegem820210207221016.azurewebsites.net/api/Schedule");
+    HttpRequest(createSchedule, "post", null, URL_BASE + "/api/Schedule");
 }
 
 function VerifyAddClassInput() {

@@ -1,9 +1,10 @@
+const URL_BASE = "https://collegem820210207221016.azurewebsites.net";
 function onLoadExam() {
     var userData = JSON.parse(sessionStorage.getItem("userdata"));
     var user = new User();
     user.populateWithJson(userData);
     document.getElementById("nameTopScreen").innerHTML = user.firstName + " " + user.lastName;
-    HttpRequest(null, "get", AfterGettingClasses, "https://collegem820210207221016.azurewebsites.net/api/Class/User/" + user.userId);
+    HttpRequest(null, "get", AfterGettingClasses, URL_BASE + "/api/Class/User/" + user.userId);
 }
 
 class User {

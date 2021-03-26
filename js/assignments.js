@@ -1,10 +1,11 @@
+const URL_BASE = "https://collegem820210207221016.azurewebsites.net";
 function onLoadAssignment() {
     var userData = JSON.parse(sessionStorage.getItem("userdata"));
     var user = new User();
     user.populateWithJson(userData);
     document.getElementById("nameTopScreen").innerHTML = user.firstName + " " + user.lastName;
     console.log("test")
-    HttpRequest(null, "get", AfterGettingClasses, "https://collegem820210207221016.azurewebsites.net/api/Class/User/" + user.userId)
+    HttpRequest(null, "get", AfterGettingClasses, URL_BASE + "/api/Class/User/" + user.userId)
 }
 
 class User {
@@ -145,7 +146,7 @@ function AfterGettingClasses(classes) {
     var userData = JSON.parse(sessionStorage.getItem("userdata"));
     var user = new User();
     user.populateWithJson(userData);
-    HttpRequest(null, "get", CreateAssignmentRows, "https://collegem820210207221016.azurewebsites.net/api/Assignment/User/" + user.userId);
+    HttpRequest(null, "get", CreateAssignmentRows, URL_BASE + "/api/Assignment/User/" + user.userId);
 }
 
 function getCourseCode(classId, classes) {
