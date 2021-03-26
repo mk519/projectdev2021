@@ -3,7 +3,7 @@ function onLoadSchedule() {
     var user = new User();
     user.populateWithJson(userData);
     document.getElementById("nameTopScreen").innerHTML = user.firstName + " " + user.lastName;
-    HttpGetPageLoadRequest("https://collegem820210207221016.azurewebsites.net/api/Schedule/" + user.userId)
+    HttpRequest(null, "get", CreateScheduleRows, "https://collegem820210207221016.azurewebsites.net/api/Schedule/" + user.userId);
 }
 
 
@@ -85,12 +85,25 @@ function updateHoursMonth(hours){
     }
 }
 
-function HttpGetPageLoadRequest(url) {
+function CreateScheduleRows(response){
+    for (s = 0; s < response.schedule.length; s++) {
+        var item = new ScheduleItem();
+        item.populateWithJson(response.schedule[s]);
+        document.getElementById("eventList").innerHTML += item.createChartHTML();
+    }
+}
+
+function HttpRequest(dataObject, method, afterResponseFunction, url) {
+    var dataToSend = null;
+    if (dataObject != null) {
+        dataToSend = JSON.stringify(dataObject)
+    }
     fetch(url, {
         credentials: "same-origin",
         mode: "cors",
-        method: "get",
-        headers: { "Content-Type": "application/json" }
+        method: method,
+        headers: { "Content-Type": "application/json" },
+        body: dataToSend
     })
         .then(resp => {
             if (resp.status === 200) {
@@ -103,10 +116,8 @@ function HttpGetPageLoadRequest(url) {
         })
         .then(dataJson => {
             response = JSON.parse(JSON.stringify(dataJson));
-            for (s = 0; s < response.schedule.length; s++) {
-                var item = new ScheduleItem();
-                item.populateWithJson(response.schedule[s]);
-                document.getElementById("eventList").innerHTML += item.createChartHTML();
+            if (afterResponseFunction != null) {
+                afterResponseFunction(response);
             }
         })
         .catch(err => {

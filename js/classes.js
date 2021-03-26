@@ -3,7 +3,7 @@ function onLoadSchedule() {
     var user = new User();
     user.populateWithJson(userData);
     document.getElementById("nameTopScreen").innerHTML = user.firstName + " " + user.lastName;
-    HttpGetPageLoadRequest("https://collegem820210207221016.azurewebsites.net/api/Class/User/" + user.userId)
+    HttpRequest(null, "get", CreateClassesRows, "https://collegem820210207221016.azurewebsites.net/api/Class/User/" + user.userId);
 }
 
 class User {
@@ -128,34 +128,12 @@ function updateHoursMonth(hours){
     }
 }
 
-function HttpGetPageLoadRequest(url) {
-    fetch(url, {
-        credentials: "same-origin",
-        mode: "cors",
-        method: "get",
-        headers: { "Content-Type": "application/json" }
-    })
-        .then(resp => {
-            if (resp.status === 200) {
-                console.log("Status: " + resp.status)
-                return resp.json()
-            } else {
-                console.log("Status: " + resp.status)
-                return Promise.reject("server")
-            }
-        })
-        .then(dataJson => {
-            classes = JSON.parse(JSON.stringify(dataJson));
-            for (c = 0; c < classes.length; c++) {
-                var _class = new Class();
-                _class.populateWithJson(classes[c]);
-                document.getElementById("classList").innerHTML += _class.createChartHTML();
-            }
-        })
-        .catch(err => {
-            if (err === "server") return
-            console.log(err)
-        })
+function CreateClassesRows(classes){
+    for (c = 0; c < classes.length; c++) {
+        var _class = new Class();
+        _class.populateWithJson(classes[c]);
+        document.getElementById("classList").innerHTML += _class.createChartHTML();
+    }
 }
 
 function createAddAssignmentButton(classId){
@@ -177,4 +155,37 @@ function createDeleteButton(classId){
     var onclick = 'onclick="TODO(this.id)"'
     var id = ' id="'+classId+'" '
     return '<button '+ id + style + onclick +'type="button" >Delete</button>';
+}
+
+function HttpRequest(dataObject, method, afterResponseFunction, url) {
+    var dataToSend = null;
+    if (dataObject != null) {
+        dataToSend = JSON.stringify(dataObject)
+    }
+    fetch(url, {
+        credentials: "same-origin",
+        mode: "cors",
+        method: method,
+        headers: { "Content-Type": "application/json" },
+        body: dataToSend
+    })
+        .then(resp => {
+            if (resp.status === 200) {
+                console.log("Status: " + resp.status)
+                return resp.json()
+            } else {
+                console.log("Status: " + resp.status)
+                return Promise.reject("server")
+            }
+        })
+        .then(dataJson => {
+            response = JSON.parse(JSON.stringify(dataJson));
+            if (afterResponseFunction != null) {
+                afterResponseFunction(response);
+            }
+        })
+        .catch(err => {
+            if (err === "server") return
+            console.log(err)
+        })
 }

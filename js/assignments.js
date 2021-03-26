@@ -3,7 +3,8 @@ function onLoadAssignment() {
     var user = new User();
     user.populateWithJson(userData);
     document.getElementById("nameTopScreen").innerHTML = user.firstName + " " + user.lastName;
-    HttpGetPageLoadRequestClasses("https://collegem820210207221016.azurewebsites.net/api/Class/User/" + user.userId, user.userId)
+    console.log("test")
+    HttpRequest(null, "get", AfterGettingClasses, "https://collegem820210207221016.azurewebsites.net/api/Class/User/" + user.userId)
 }
 
 class User {
@@ -129,61 +130,22 @@ function updateHoursMonth(hours) {
     }
 }
 
-function HttpGetPageLoadRequest(url, classes) {
-    fetch(url, {
-        credentials: "same-origin",
-        mode: "cors",
-        method: "get",
-        headers: { "Content-Type": "application/json" }
-    })
-        .then(resp => {
-            if (resp.status === 200) {
-                console.log("Status: " + resp.status)
-                return resp.json()
-            } else {
-                console.log("Status: " + resp.status)
-                return Promise.reject("server")
-            }
-        })
-        .then(dataJson => {
-            console.log(dataJson)
-            assignments = JSON.parse(JSON.stringify(dataJson));
-            for (a = 0; a < assignments.length; a++) {
-                var assignment = new Assignment();
-                assignment.populateWithJson(assignments[a]);
-                document.getElementById("assignmentList").innerHTML += assignment.createChartHTML(getCourseCode(assignment.classId, classes));
-            }
-        })
-        .catch(err => {
-            if (err === "server") return
-            console.log(err)
-        })
+function CreateAssignmentRows(assignments) {
+    var userData = JSON.parse(sessionStorage.getItem("userdata"));
+    var classes = userData.classes;
+    for (a = 0; a < assignments.length; a++) {
+        var assignment = new Assignment();
+        assignment.populateWithJson(assignments[a]);
+        document.getElementById("assignmentList").innerHTML += assignment.createChartHTML(getCourseCode(assignment.classId, classes));
+    }
 }
 
-function HttpGetPageLoadRequestClasses(url, userId) {
-    fetch(url, {
-        credentials: "same-origin",
-        mode: "cors",
-        method: "get",
-        headers: { "Content-Type": "application/json" }
-    })
-        .then(resp => {
-            if (resp.status === 200) {
-                console.log("Status: " + resp.status)
-                return resp.json()
-            } else {
-                console.log("Status: " + resp.status)
-                return Promise.reject("server")
-            }
-        })
-        .then(dataJson => {
-            classes = JSON.parse(JSON.stringify(dataJson));
-            HttpGetPageLoadRequest("https://collegem820210207221016.azurewebsites.net/api/Assignment/User/" + userId, classes)
-        })
-        .catch(err => {
-            if (err === "server") return
-            console.log(err)
-        })
+function AfterGettingClasses(classes) {
+    UpdateStoredUserClasses(classes);
+    var userData = JSON.parse(sessionStorage.getItem("userdata"));
+    var user = new User();
+    user.populateWithJson(userData);
+    HttpRequest(null, "get", CreateAssignmentRows, "https://collegem820210207221016.azurewebsites.net/api/Assignment/User/" + user.userId);
 }
 
 function getCourseCode(classId, classes) {
@@ -197,9 +159,48 @@ function getCourseCode(classId, classes) {
     return "null";
 }
 
-function createDeleteButton(id){
+function createDeleteButton(id) {
     var style = 'style="border: 2px solid black;background-color:#f44336;margin: 4px 2px;display: inline-block;text-align:center;font-size: 12px;text-decoration: none;border: none;color: white;padding: 4px 8px;'
     var onclick = 'onclick="TODO(this.id)"'
-    var id = ' id="'+id+'" '
-    return '<button '+ id + style + onclick +'type="button" >Delete</button>';
+    var id = ' id="' + id + '" '
+    return '<button ' + id + style + onclick + 'type="button" >Delete</button>';
+}
+
+function HttpRequest(dataObject, method, afterResponseFunction, url) {
+    var dataToSend = null;
+    if (dataObject != null) {
+        dataToSend = JSON.stringify(dataObject)
+    }
+    fetch(url, {
+        credentials: "same-origin",
+        mode: "cors",
+        method: method,
+        headers: { "Content-Type": "application/json" },
+        body: dataToSend
+    })
+        .then(resp => {
+            if (resp.status === 200) {
+                console.log("Status: " + resp.status)
+                return resp.json()
+            } else {
+                console.log("Status: " + resp.status)
+                return Promise.reject("server")
+            }
+        })
+        .then(dataJson => {
+            response = JSON.parse(JSON.stringify(dataJson));
+            if (afterResponseFunction != null) {
+                afterResponseFunction(response);
+            }
+        })
+        .catch(err => {
+            if (err === "server") return
+            console.log(err)
+        })
+}
+
+function UpdateStoredUserClasses(classes){
+    var userData = JSON.parse(sessionStorage.getItem("userdata"));
+    userData.classes = classes;
+    sessionStorage.setItem("userdata", JSON.stringify(userData));
 }
