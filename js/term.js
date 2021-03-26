@@ -108,10 +108,10 @@ function createDeleteButton(id) { // term id
 
 function DeleteTermOnClick(termId){
     console.log("Termid: "+termId);
-    HttpRequest(null, "delete", AfterDelete, URL_BASE + "/api/Term/" + termId);
+    HttpRequest(null, "delete", RefreshPage, URL_BASE + "/api/Term/" + termId);
 }
 
-function AfterDelete(response){
+function RefreshPage(response){
     location.reload();
 }
 
