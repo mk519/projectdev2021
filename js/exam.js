@@ -142,7 +142,7 @@ function CreateExamRows(exams) {
 }
 
 function AfterGettingClasses(classes) {
-    UpdateStoredUserExams(classes);
+    UpdateStoredUserClasses(classes);
     var userData = JSON.parse(sessionStorage.getItem("userdata"));
     var user = new User();
     user.populateWithJson(userData);
@@ -175,9 +175,9 @@ function RefreshPage(response){
     location.reload();
 }
 
-function UpdateStoredUserExams(exams) {
+function UpdateStoredUserClasses(classes){
     var userData = JSON.parse(sessionStorage.getItem("userdata"));
-    userData.exams = exams;
+    userData.classes = classes;
     sessionStorage.setItem("userdata", JSON.stringify(userData));
 }
 
