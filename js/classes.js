@@ -75,25 +75,25 @@ class Class {
         var endMins = updateMins(dtEnd.getMinutes());
 
         var daysOfWeek = "";
-        if(this.monday){
+        if (this.monday) {
             daysOfWeek += "Mon "
         }
-        if(this.tuesday){
+        if (this.tuesday) {
             daysOfWeek += "Tue "
         }
-        if(this.wednesday){
+        if (this.wednesday) {
             daysOfWeek += "Wed "
         }
-        if(this.thursday){
+        if (this.thursday) {
             daysOfWeek += "Thu "
         }
-        if(this.friday){
+        if (this.friday) {
             daysOfWeek += "Fri "
         }
-        if(this.saturday){
+        if (this.saturday) {
             daysOfWeek += "Sat "
         }
-        if(this.sunday){
+        if (this.sunday) {
             daysOfWeek += "Sun "
         }
 
@@ -106,7 +106,31 @@ class Class {
         var btnAssignmentAdd = "<td>" + createAddAssignmentButton(this.classId) + "</td>";
         var btnExamAdd = "<td>" + createAddExamButton(this.classId) + "</td>";
         var btnDelete = "<td>" + createDeleteButton(this.classId) + "</td>";
-        return "<tr>" + courseCode + courseName + tmStart + tmEnd + days + btnAssignmentAdd + btnExamAdd + btnDelete +"</tr>"
+        return "<tr>" + courseCode + courseName + tmStart + tmEnd + days + btnAssignmentAdd + btnExamAdd + btnDelete + "</tr>"
+    }
+}
+
+class Exam {
+    constructor() {
+        this.examId = null;
+        this.classId = null;
+        this.termId = null;
+        this.userId = null;
+        this.startTime = null;
+        this.endTime = null;
+    }
+}
+
+class Assignment {
+    constructor() {
+        this.assignmentId = null;
+        this.userId = null;
+        this.termId = null;
+        this.classId = null;
+        this.releaseDate = null;
+        this.dueDate = null;
+        this.gradeWeight = null;
+        this.hoursToComplete = null;
     }
 }
 
@@ -121,15 +145,15 @@ function updateMins(mins) {
     }
 }
 
-function updateHoursMonth(hours){
-    if(hours <= 9){
+function updateHoursMonth(hours) {
+    if (hours <= 9) {
         return "0" + hours;
-    }else{
+    } else {
         return hours;
     }
 }
 
-function CreateClassesRows(classes){
+function CreateClassesRows(classes) {
     for (c = 0; c < classes.length; c++) {
         var _class = new Class();
         _class.populateWithJson(classes[c]);
@@ -137,52 +161,70 @@ function CreateClassesRows(classes){
     }
 }
 
-function createAddAssignmentButton(classId){
+function createAddAssignmentButton(classId) {
     var style = ' style="border: 2px solid black;background-color:#008CBA;margin: 4px 2px;display: inline-block;text-align:center;font-size: 10px;text-decoration: none;border: none;color: white;padding: 4px 8px;" '
-    var onclick = ' onclick="TODO(this.name)" '
-    var name = ' name="'+classId+'" '
-    return '<button ' + name + style + onclick +' type="button" >Add Assignment</button>';
+    var onclick = ' onclick="OpenAddAssignmentModal(this.name)" '
+    var name = ' name="' + classId + '" '
+    return '<button ' + name + style + onclick + ' type="button" >Add Assignment</button>';
 }
 
-function createAddExamButton(classId){
-    var style = 'style="border: 2px solid black;background-color:#008CBA;margin: 4px 2px;display: inline-block;text-align:center;font-size: 10px;text-decoration: none;border: none;color: white;padding: 4px 8px;" '
-    var onclick = ' onclick="TODO(this.name)" '
-    var name = ' name="'+classId+'" '
-    return '<button ' + name + style + onclick +' type="button" >Add Exam</button>';
+function createAddExamButton(classId) {
+    var style = ' style="border: 2px solid black;background-color:#008CBA;margin: 4px 2px;display: inline-block;text-align:center;font-size: 10px;text-decoration: none;border: none;color: white;padding: 4px 8px;" '
+    var onclick = ' onclick="OpenAddExamModal(this.name)" '
+    var name = ' name="' + classId + '" '
+    return '<button ' + name + style + onclick + ' type="button" >Add Exam</button>';
 }
 
-function createDeleteButton(classId){
+function createDeleteButton(classId) {
     var style = ' style="border: 2px solid black;background-color:#f44336;margin: 4px 2px;display: inline-block;text-align:center;font-size: 10px;text-decoration: none;border: none;color: white;padding: 4px 8px;" '
     var onclick = ' onclick="DeleteClassOnClick(this.name)" '
-    var name = ' name="'+classId+'" '
-    return '<button '+ name + style + onclick +' type="button" >Delete</button>';
+    var name = ' name="' + classId + '" '
+    return '<button ' + name + style + onclick + ' type="button" >Delete</button>';
 }
 
-function DeleteClassOnClick(classId){
+function DeleteClassOnClick(classId) {
     HttpRequest(null, "delete", RefreshPage, URL_BASE + "/api/Class/" + classId);
 }
 
-function RefreshPage(response){
+function RefreshPage(response) {
     location.reload();
 }
 
-function VerifyAddAssignmentInput() {
+function AddAssignmentOnCLick(classId) {
+    if (IsValidAddAssignmentInput()) {
+        var releaseDate = document.getElementById("releaseDate").value;
+        var dueDate = document.getElementById("dueDate").value;
+        var gradeWeight = document.getElementById("gradeWeight").value;
+        var hoursToComplete = document.getElementById("hoursNeeded").value;
+        var userData = JSON.parse(sessionStorage.getItem("userdata"));
+        var assignment = new Assignment();
+        assignment.userId = userData.userId;
+        assignment.classId = classId;
+        assignment.releaseDate = releaseDate;
+        assignment.dueDate = dueDate;
+        assignment.gradeWeight = parseInt(gradeWeight);
+        assignment.hoursToComplete = parseFloat(hoursToComplete);
+        HttpRequest(assignment, "post", CloseAddAssignmentModal, URL_BASE + "/api/Assignment");
+    }
+}
+
+function IsValidAddAssignmentInput() {
     inputVerified = true;
     ResetAddAssignmentLabels();
-    var releaseDateLblId = "";
-    var releaseDate = document.getElementById("").value;
-    var dueDateLblId = "";
-    var dueDateDate = document.getElementById("").value;
-    var gradeWeightLblId = "";
-    var gradeWeight = document.getElementById("").value;
-    var hoursToCompleteLblId = "";
-    var hoursToComplete = document.getElementById("").value;
+    var releaseDateLblId = "lblreleaseDate";
+    var releaseDate = document.getElementById("releaseDate").value;
+    var dueDateLblId = "lbldueDate";
+    var dueDate = document.getElementById("dueDate").value;
+    var gradeWeightLblId = "lblgradeWeight";
+    var gradeWeight = document.getElementById("gradeWeight").value;
+    var hoursToCompleteLblId = "lblhoursNeeded";
+    var hoursToComplete = document.getElementById("hoursNeeded").value;
 
     if (!IsValidDate(releaseDate)) {
         UpdateErrorMessage(releaseDateLblId, "Release Date input invalid. Use format YYYY-MM-DD");
         inputVerified = false;
     }
-    if (!IsValidDate(dueDateDate)) {
+    if (!IsValidDate(dueDate)) {
         UpdateErrorMessage(dueDateLblId, "Due Date input invalid. Use format YYYY-MM-DD");
         inputVerified = false;
     }
@@ -198,19 +240,40 @@ function VerifyAddAssignmentInput() {
 }
 
 function ResetAddAssignmentLabels() {
-    document.getElementById("").innerHTML = "Todo";
-    document.getElementById("").style.color = "#607d8b";
+    document.getElementById("lblreleaseDate").innerHTML = "Release Date";
+    document.getElementById("lblreleaseDate").style.color = "#607d8b";
+    document.getElementById("lbldueDate").innerHTML = "Due Date";
+    document.getElementById("lbldueDate").style.color = "#607d8b";
+    document.getElementById("lblgradeWeight").innerHTML = "Grade Weight (%)";
+    document.getElementById("lblgradeWeight").style.color = "#607d8b";
+    document.getElementById("lblhoursNeeded").innerHTML = "Hours Needed To Complete";
+    document.getElementById("lblhoursNeeded").style.color = "#607d8b";
 }
 
-function VerifyAddExamInput() {
+function AddExamOnCLick(classId) {
+    if (IsValidAddExamInput()) {
+        var examDate = document.getElementById("examDate").value;
+        var startTime = document.getElementById("startTime").value;
+        var endTime = document.getElementById("endTime").value;
+        var userData = JSON.parse(sessionStorage.getItem("userdata"));
+        var exam = new Exam();
+        exam.userId = userData.userId;
+        exam.classId = classId;
+        exam.startTime = examDate + "T" + TimeToDateTimeStr(startTime).split("T")[1];
+        exam.endTime = examDate + "T" + TimeToDateTimeStr(endTime).split("T")[1];
+        HttpRequest(exam, "post", CloseAddExamModal, URL_BASE + "/api/Exam");
+    }
+}
+
+function IsValidAddExamInput() {
     inputVerified = true;
     ResetAddExamLabels();
-    var examDateLblId = "";
-    var examDate = document.getElementById("").value;
-    var startTimeLblId = "";
-    var startTime = document.getElementById("").value;
-    var endTimeLblId = "";
-    var endTime = document.getElementById("").value;
+    var examDateLblId = "lblexamDate";
+    var examDate = document.getElementById("examDate").value;
+    var startTimeLblId = "lblstartTime";
+    var startTime = document.getElementById("startTime").value;
+    var endTimeLblId = "lblendTime";
+    var endTime = document.getElementById("endTime").value;
 
     if (!IsValidDate(examDate)) {
         UpdateErrorMessage(examDateLblId, "Exam Date input invalid. Use format YYYY-MM-DD");
@@ -228,8 +291,12 @@ function VerifyAddExamInput() {
 }
 
 function ResetAddExamLabels() {
-    document.getElementById("").innerHTML = "Todo";
-    document.getElementById("").style.color = "#607d8b";
+    document.getElementById("lblexamDate").innerHTML = "Exam Date";
+    document.getElementById("lblexamDate").style.color = "#607d8b";
+    document.getElementById("lblstartTime").innerHTML = "Start Time";
+    document.getElementById("lblstartTime").style.color = "#607d8b";
+    document.getElementById("lblendTime").innerHTML = "End Time";
+    document.getElementById("lblendTime").style.color = "#607d8b";
 }
 
 function UpdateErrorMessage(label, message) {
@@ -237,17 +304,17 @@ function UpdateErrorMessage(label, message) {
     document.getElementById(label).style.color = "red";
 }
 
-function IsValidHoursToComplete(hours){
+function IsValidHoursToComplete(hours) {
     var isValid = true;
-    if(isNaN(hours) || parseFloat(hours) <= 0 || parseFloat(hours) >= 100){
+    if (isNaN(hours) || parseFloat(hours) <= 0 || parseFloat(hours) >= 100) {
         isValid = false;
     }
     return isValid;
 }
 
-function IsValidGradeWeight(gradeWeight){
+function IsValidGradeWeight(gradeWeight) {
     var isValid = true;
-    if(isNaN(gradeWeight) || parseInt(gradeWeight) < 0 || parseInt(gradeWeight) > 100){
+    if (isNaN(gradeWeight) || parseInt(gradeWeight) < 0 || parseInt(gradeWeight) > 100) {
         isValid = false;
     }
     return isValid;
@@ -320,4 +387,48 @@ function HttpRequest(dataObject, method, afterResponseFunction, url) {
             if (err === "server") return
             console.log(err)
         })
+}
+
+function OpenAddAssignmentModal(classId) {
+    // Get the modal
+    var modal = document.getElementById("modalAddAssignment");
+    modal.style.display = "block";
+    document.getElementById("addAssignmentConfirm").name = classId;
+}
+
+function CloseAddAssignmentModal(response = null) {
+    var modal = document.getElementById("modalAddAssignment");
+    modal.style.display = "none";
+    document.getElementById("addAssignmentConfirm").name = "addAssignmentConfirm";
+    if (response != null) {
+        document.getElementById("releaseDate").value = "";
+        document.getElementById("dueDate").value = "";
+        document.getElementById("gradeWeight").value = "";
+        document.getElementById("hoursNeeded").value = "";
+    }
+}
+
+function OpenAddExamModal(classId) {
+    // Get the modal
+    var modal = document.getElementById("modalAddExam");
+    modal.style.display = "block";
+    document.getElementById("addExamConfirm").name = classId;
+}
+
+function CloseAddExamModal(response = null) {
+    var modal = document.getElementById("modalAddExam");
+    modal.style.display = "none";
+    document.getElementById("addExamConfirm").name = "addExamConfirm";
+    if (response != null) {
+        document.getElementById("examDate").value = "";
+        document.getElementById("startTime").value = "";
+        document.getElementById("endTime").value = "";
+    }
+}
+
+function TimeToDateTimeStr(timeStr) {
+    var datetimePrefix = "0001-01-01T";
+    var datetimeSuffix = ":00";
+    var timeAsDateTime = datetimePrefix + updateHoursMonth(parseInt(timeStr.split(":")[0])) + ":" + updateMins(parseInt(timeStr.split(":")[1])) + datetimeSuffix;
+    return timeAsDateTime;
 }

@@ -321,6 +321,88 @@
     <!-- ============================================================== -->
     <!-- End Wrapper -->
     <!-- ============================================================== -->
+    <div id="modalAddExam" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <section class="modalSection">
+                <div class="contentBx">
+                    <div class="formBx">
+                        <h2>Add An Exam</h2>
+                        <form>
+                            <div class="inputBx">
+                                <span id="lblexamDate">Exam Date</span>
+                                <input id="examDate" placeholder="YYYY-MM-DD" type="text" name="">
+                            </div>
+
+                            <div class="inputBx">
+                                <span id="lblstartTime">Start Time</span>
+                                <input id="startTime" placeholder="hh:mm" type="text" name="">
+                            </div>
+
+                            <div class="inputBx">
+                                <span id="lblendTime">End Time</span>
+                                <input id="endTime" placeholder="hh:mm" type="text" name="">
+                            </div>
+
+                            <div class="inputBx">
+                                <input id="addExamConfirm" name="addExamConfirm" type="button" value="Add Exam" onclick="AddExamOnCLick(this.name)">
+                            </div>
+
+                            <div class="inputBx">
+                                <input type="button" value="Cancel" onclick="CloseAddExamModal()" name="">
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <div id="modalAddAssignment" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <section class="modalSection">
+                <div class="contentBx">
+                    <div class="formBx">
+                        <h2>Add An Assignment</h2>
+                        <form>
+                            <div class="inputBx">
+                                <span id="lblreleaseDate">Release Date</span>
+                                <input id="releaseDate" placeholder="YYYY-MM-DD" type="text" name="">
+                            </div>
+
+                            <div class="inputBx">
+                                <span id="lbldueDate">Due Date</span>
+                                <input id="dueDate" placeholder="YYYY-MM-DD" type="text" name="">
+                            </div>
+
+                            <div class="inputBx">
+                                <span id="lblgradeWeight">Grade Weight (%)</span>
+                                <input id="gradeWeight" type="text" name="">
+                            </div>
+
+                            <div class="inputBx">
+                                <span id="lblhoursNeeded">Hours Needed To Complete</span>
+                                <input id="hoursNeeded" type="text" name="">
+                            </div>
+
+                            <div class="inputBx">
+                                <input id="addAssignmentConfirm" name="addAssignmentConfirm" type="button" value="Add Assignment" onclick="AddAssignmentOnCLick(this.name)">
+                            </div>
+
+                            <div class="inputBx">
+                                <input type="button" value="Cancel" onclick="CloseAddAssignmentModal()" name="">
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+
     <!-- ============================================================== -->
     <!-- All Jquery -->
     <!-- ============================================================== -->
