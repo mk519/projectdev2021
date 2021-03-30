@@ -47,7 +47,7 @@ section .contentBx .formBx .inputBx input {
   color: #607d8b;
   background: transparent;
   border-radius: 30px;
-  margin-bottom: 20px;
+  margin-bottom: 3px;
 }
 
 section .contentBx .formBx h2 {
@@ -92,4 +92,5 @@ section .contentBx .formBx .checkboxBx label {
     color: white;
     border-radius: 30px;
     background: #02a2f8;
+    margin-top: 15px;
 }
