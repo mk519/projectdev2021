@@ -80,3 +80,16 @@ section .contentBx .formBx .checkboxBx label {
   font-size: 16px;
   letter-spacing: 1px;
 }
+
+#btnLogin, #addClassConfirm, #btnAddTerm, #addExamConfirm, #addAssignmentConfirm, #btnRegister{
+    width: 100%;
+    padding: 10px 20px;
+    outline: none;
+    font-weight: 400;
+    border: 1px solid #dfe9ee;
+    font-size: 16px;
+    letter-spacing: 1px;
+    color: white;
+    border-radius: 30px;
+    background: #02a2f8;
+}
