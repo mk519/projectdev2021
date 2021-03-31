@@ -88,8 +88,8 @@ class Class {
 }
 
 function updateMins(mins) {
-    if (mins == 0) {
-        return "00";
+    if (mins < 10) {
+        return "0" + mins;
     } else {
         return mins;
     }
@@ -126,7 +126,6 @@ function createDeleteButton(id) { // term id
 }
 
 function DeleteTermOnClick(termId) {
-    console.log("Termid: " + termId);
     HttpRequest(null, "delete", RefreshPage, URL_BASE + "/api/Term/" + termId);
 }
 
@@ -179,7 +178,7 @@ function AddClassOnClick(termId) {
         _class.termId = termId;
         _class.userId = userData.userId;
         _class.courseCode = document.getElementById("courseCode").value;
-        _class.className = document.getElementById("className").value;
+        _class.className = document.getElementById("classNameTxt").value;
         _class.startTime = TimeToDateTimeStr(document.getElementById("startTime").value);
         _class.endTime = TimeToDateTimeStr(document.getElementById("endTime").value);
         _class.monday = document.getElementById("chkMonday").checked;
@@ -199,12 +198,11 @@ function IsValidAddClassInput() {
     var courseCodeLblId = "lblCourseCode";
     var courseCode = document.getElementById("courseCode").value;
     var courseNameLblId = "lblClassName";
-    var courseName = document.getElementById("className").value;
+    var courseName = document.getElementById("classNameTxt").value;
     var startTimeLblId = "lblStartTime";
     var startTime = document.getElementById("startTime").value;
     var endTimeLblId = "lblEndTime";
     var endTime = document.getElementById("endTime").value;
-
     if (!IsValidTime(startTime)) {
         UpdateErrorMessage(startTimeLblId, "Start Time input invalid. Use format hh:mm");
         inputVerified = false;
@@ -402,7 +400,7 @@ function CloseAddClassModal(response = null) {
     document.getElementById("addClassConfirm").name = "addClassConfirm";
     if (response != null) {
         document.getElementById("courseCode").value = "";
-        document.getElementById("className").value = "";
+        document.getElementById("classNameTxt").value = "";
         document.getElementById("startTime").value = "";
         document.getElementById("endTime").value = "";
         document.getElementById("chkMonday").checked = false;
