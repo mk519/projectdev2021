@@ -3,6 +3,7 @@ function onLoadIndex() {
     var userData = JSON.parse(sessionStorage.getItem("userdata"));
     var user = new User();
     user.populateWithJson(userData);
+    HttpRequest(null, "get", UpdateNextImportantEvent, URL_BASE + "/api/User/NextEvent/" + user.userId);
     HttpRequest(null, "get", CreateScheduleRows, URL_BASE + "/api/Schedule/" + user.userId);
     HttpRequest(null, "get", UpdatePageCounts, URL_BASE + "/api/User/" + user.userId + "?expand=true");
 }
@@ -110,10 +111,30 @@ function UpdatePageCounts(response) {
 }
 
 function CreateScheduleRows(response) {
-    for (s = 0; s < response.schedule.length; s++) {
+    var scheduleLength = response.schedule.length;
+    var numOfRows = 10;
+    if(scheduleLength < numOfRows){
+        numOfRows = scheduleLength;
+    }
+    for (s = 0; s < numOfRows; s++) {
         var item = new ScheduleItem();
         item.populateWithJson(response.schedule[s]);
         document.getElementById("eventList").innerHTML += item.createChartHTML();
+    }
+}
+
+function UpdateNextImportantEvent(response){
+    if(response.dateStr != undefined){
+        document.getElementById("lblDateString").innerHTML = response.dateStr;
+    }
+    if(response.title != undefined){
+        document.getElementById("lblTitleString").innerHTML = response.title;
+    }
+    if(response.description != undefined){
+        document.getElementById("lblDescriptionString").innerHTML = response.description;
+    }
+    if(response.timeStr != undefined){
+        document.getElementById("lblTimeString").innerHTML = response.timeStr;
     }
 }
 
