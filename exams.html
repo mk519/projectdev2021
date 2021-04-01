@@ -278,6 +278,7 @@
                                             <th class="border-top-0">Start Time</th>
                                             <th class="border-top-0">End Time</th>
                                             <th class="border-top-0"></th>
+                                            <th class="border-top-0"></th>
                                         </tr>
                                     </thead>
                                     <tbody id="examList">
@@ -318,6 +319,43 @@
     <!-- ============================================================== -->
     <!-- End Wrapper -->
     <!-- ============================================================== -->
+    <div id="modalEditExam" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <section class="modalSection">
+                <div class="contentBx">
+                    <div class="formBx">
+                        <h2>Update Exam</h2>
+                        <form>
+                            <div class="inputBx">
+                                <span id="lblexamDate">Exam Date</span>
+                                <input id="examDate" type="date" name="">
+                            </div>
+
+                            <div class="inputBx">
+                                <span id="lblstartTime">Start Time</span>
+                                <input id="startTime" type="time" name="">
+                            </div>
+
+                            <div class="inputBx">
+                                <span id="lblendTime">End Time</span>
+                                <input id="endTime" type="time" name="">
+                            </div>
+
+                            <div class="inputBx">
+                                <input id="editExamConfirm" name="editExamConfirm" type="button" value="Update Exam" onclick="UpdateExamOnClick(this.name)">
+                            </div>
+
+                            <div class="inputBx">
+                                <input type="button" value="Cancel" onclick="CloseEditExamModal()" name="">
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
     <!-- ============================================================== -->
     <!-- All Jquery -->
     <!-- ============================================================== -->

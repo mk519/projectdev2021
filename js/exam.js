@@ -106,9 +106,10 @@ class Exam {
         var examDate = "<td>" + dtStart.getFullYear() + "-" + startMonth + "-" + startDay + "</td>";
         var tmStart = "<td>" + startHours + ":" + startMins + "</td>";
         var tmEnd = "<td>" + endHours + ":" + endMins + "</td>";
+        var btnEdit = "<td>" + createEditButton(this.examId) + "</td>";
         var btnDelete = "<td>" + createDeleteButton(this.examId) + "</td>";
 
-        return "<tr>" + courseCode + examDate + tmStart + tmEnd + btnDelete + "</tr>"
+        return "<tr>" + courseCode + examDate + tmStart + tmEnd + btnEdit + btnDelete + "</tr>"
     }
 }
 
@@ -167,18 +168,174 @@ function createDeleteButton(id) {
     return '<button ' + name + style + onclick + 'type="button" >Delete</button>';
 }
 
-function DeleteExamOnClick(examId){
+function createEditButton(id) {
+    var style = ' style="border: 2px solid black;background-color:#46C646;margin: 4px 2px;display: inline-block;text-align:center;font-size: 12px;text-decoration: none;border: none;color: white;padding: 4px 8px;" '
+    var onclick = ' onclick="OpenEditExamModal(this.name)" '
+    var name = ' name="' + id + '" '
+    return '<button ' + name + style + onclick + 'type="button" >Edit</button>';
+}
+
+function DeleteExamOnClick(examId) {
     HttpRequest(null, "delete", RefreshPage, URL_BASE + "/api/Exam/" + examId);
 }
 
-function RefreshPage(response){
+function UpdateExamOnClick(examId) {
+    if (IsValidAddExamInput()) {
+        var exam = new Exam();
+        var date = document.getElementById("examDate").value;
+        var startTime = document.getElementById("startTime").value
+        var endTime = document.getElementById("endTime").value
+        exam.examId = examId;
+        exam.startTime = CreateTimeString(date, startTime);
+        exam.endTime = CreateTimeString(date, endTime);
+        HttpRequest(exam, "put", RefreshPage, URL_BASE + "/api/Exam");
+    }
+}
+
+function OpenEditExamModal(examId) {
+    // Get the modal
+    var modal = document.getElementById("modalEditExam");
+    modal.style.display = "block";
+    document.getElementById("editExamConfirm").name = examId;
+    HttpRequest(null, "get", PopulateExamModal, URL_BASE + "/api/Exam/" + examId)
+
+}
+
+function PopulateExamModal(response) {
+    var dtStart = new Date(Date.parse(response.startTime));
+    var dtEnd = new Date(Date.parse(response.endTime));
+    var startHours = updateHoursMonth(dtStart.getHours());
+    var startMins = updateMins(dtStart.getMinutes());
+    var endHours = updateHoursMonth(dtEnd.getHours());
+    var endMins = updateMins(dtEnd.getMinutes());
+    var startMonth = updateHoursMonth(dtStart.getMonth() + 1);
+    var startDay = updateHoursMonth(dtStart.getDate());
+    document.getElementById("examDate").value = dtStart.getFullYear() + "-" + startMonth + "-" + startDay;
+    document.getElementById("startTime").value = startHours + ":" + startMins;
+    document.getElementById("endTime").value = endHours + ":" + endMins;
+}
+
+function CloseEditExamModal(response = null) {
+    // Get the modal
+    var modal = document.getElementById("modalEditExam");
+    modal.style.display = "none";
+    if (response != null) {
+        document.getElementById("examDate").value = "";
+        document.getElementById("startTime").value = "";
+        document.getElementById("endTime").value = "";
+        location.reload();
+    }
+}
+
+function IsValidAddExamInput() {
+    inputVerified = true;
+    ResetEditExamLabels();
+    var examDateLblId = "lblexamDate";
+    var examDate = document.getElementById("examDate").value;
+    var startTimeLblId = "lblstartTime";
+    var startTime = document.getElementById("startTime").value;
+    var endTimeLblId = "lblendTime";
+    var endTime = document.getElementById("endTime").value;
+
+    if (!IsValidDate(examDate)) {
+        UpdateErrorMessage(examDateLblId, "Exam Date input invalid. Use format YYYY-MM-DD");
+        inputVerified = false;
+    }
+    if (!IsValidTime(startTime)) {
+        UpdateErrorMessage(startTimeLblId, "Start Time input invalid. Use format hh:mm");
+        inputVerified = false;
+    }
+    if (!IsValidTime(endTime)) {
+        UpdateErrorMessage(endTimeLblId, "End Time input invalid. Use format hh:mm");
+        inputVerified = false;
+    }
+    return inputVerified;
+}
+
+function ResetEditExamLabels() {
+    document.getElementById("lblexamDate").innerHTML = "Exam Date";
+    document.getElementById("lblexamDate").style.color = "#607d8b";
+    document.getElementById("lblstartTime").innerHTML = "Start Time";
+    document.getElementById("lblstartTime").style.color = "#607d8b";
+    document.getElementById("lblendTime").innerHTML = "End Time";
+    document.getElementById("lblendTime").style.color = "#607d8b";
+}
+
+function IsValidTime(time) {
+    var isTimeValid = true;
+    if (!time.includes(":") || time.split(":").length != 2) {
+        isTimeValid = false;
+    } else {
+        var times = time.split(":");
+        var hours = times[0];
+        var mins = times[1];
+        if (isNaN(hours) || isNaN(mins) || parseInt(hours) < 0 || parseInt(hours) >= 24 || parseInt(mins) < 0 || parseInt(mins) >= 60) {
+            isTimeValid = false;
+        }
+    }
+    return isTimeValid
+}
+
+function IsValidDate(dateStr) {
+    var isValidDate = true;
+    if (dateStr.split("-").length != 3) {
+        isValidDate = false;
+    } else {
+        var splitDate = dateStr.split("-");
+        var year = splitDate[0];
+        var month = splitDate[1];
+        var day = splitDate[2];
+        if (isNaN(year) || isNaN(month) || isNaN(day)) {
+            isValidDate = false;
+        } else {
+            var date = new Date(Date.parse(dateStr));
+            if (isNaN(date)) {
+                isValidDate = false;
+            }
+        }
+    }
+    return isValidDate;
+}
+
+function CreateTimeString(date, time){
+    var datetimePrefix = date + "T";
+    var datetimeSuffix = ":00";
+    var fullDateTime = datetimePrefix + time + datetimeSuffix;
+    return fullDateTime;
+}
+
+function UpdateErrorMessage(label, message) {
+    document.getElementById(label).innerHTML = message;
+    document.getElementById(label).style.color = "red";
+}
+
+function RefreshPage(response) {
     location.reload();
 }
 
-function UpdateStoredUserClasses(classes){
+function UpdateStoredUserClasses(classes) {
     var userData = JSON.parse(sessionStorage.getItem("userdata"));
     userData.classes = classes;
     sessionStorage.setItem("userdata", JSON.stringify(userData));
+}
+
+function updateMins(mins) {
+    if (mins == 0) {
+        return "00";
+    } else if (mins <= 9) {
+        return "0" + mins;
+    }
+    else {
+        return mins;
+    }
+}
+
+function updateHoursMonth(hours) {
+    if (hours <= 9) {
+        return "0" + hours;
+    } else {
+        return hours;
+    }
 }
 
 function HttpRequest(dataObject, method, afterResponseFunction, url) {
