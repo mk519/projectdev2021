@@ -1,3 +1,4 @@
+
 const URL_BASE = "https://collegem820210207221016.azurewebsites.net";
 function onLoadSchedule() {
     var userData = JSON.parse(sessionStorage.getItem("userdata"));
