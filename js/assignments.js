@@ -104,9 +104,10 @@ class Assignment {
         var releaseDate = "<td>" + dtRelease.getFullYear() + "-" + releaseMonth + "-" + releaseDay + "</td>";
         var dueDate = "<td>" + dtDue.getFullYear() + "-" + dueMonth + "-" + dueDay + "</td>";
         var gradeWeight = "<td>" + this.gradeWeight + "%</td>";
+        var btnEdit = "<td>" + createEditButton(this.assignmentId) + "</td>";
         var btnDelete = "<td>" + createDeleteButton(this.assignmentId) + "</td>";
 
-        return "<tr>" + courseCode + releaseDate + dueDate + gradeWeight + btnDelete + "</tr>"
+        return "<tr>" + courseCode + releaseDate + dueDate + gradeWeight + btnEdit + btnDelete + "</tr>"
     }
 
 
@@ -167,12 +168,152 @@ function createDeleteButton(id) {
     return '<button ' + name + style + onclick + 'type="button" >Delete</button>';
 }
 
+function createEditButton(id) {
+    var style = ' style="border: 2px solid black;background-color:#46C646;margin: 4px 2px;display: inline-block;text-align:center;font-size: 12px;text-decoration: none;border: none;color: white;padding: 4px 8px;" '
+    var onclick = ' onclick="OpenEditAssignmentModal(this.name)" '
+    var name = ' name="' + id + '" '
+    return '<button ' + name + style + onclick + 'type="button" >Edit</button>';
+}
+
 function DeleteAssignmentOnClick(assignmentId){
     HttpRequest(null, "delete", RefreshPage, URL_BASE + "/api/Assignment/" + assignmentId);
 }
 
 function RefreshPage(response){
     location.reload();
+}
+
+function OpenEditAssignmentModal(assignmentId) {
+    // Get the modal
+    var modal = document.getElementById("modalEditAssignment");
+    modal.style.display = "block";
+    document.getElementById("editAssignmentConfirm").name = assignmentId;
+    HttpRequest(null, "get", PopulateAssignmentModal, URL_BASE + "/api/Assignment/" + assignmentId)
+
+}
+
+function CloseEditAssignmentModal(response = null) {
+    // Get the modal
+    var modal = document.getElementById("modalEditAssignment");
+    modal.style.display = "none";
+    if (response != null) {
+        document.getElementById("releaseDate").value = "";
+        document.getElementById("dueDate").value = "";
+        document.getElementById("gradeWeight").value = "";
+        document.getElementById("hoursNeeded").value = "";
+        location.reload();
+    }
+}
+
+function PopulateAssignmentModal(response) {
+    document.getElementById("releaseDate").value = response.releaseDate.split("T")[0];
+    document.getElementById("dueDate").value = response.dueDate.split("T")[0];
+    document.getElementById("gradeWeight").value = response.gradeWeight;
+    document.getElementById("hoursNeeded").value = response.hoursToComplete;
+}
+
+function EditAssignmentOnCLick(assignmentId){
+    if(IsValidAddAssignmentInput()){
+        var assignment = new Assignment();
+        assignment.assignmentId = assignmentId;
+        assignment.releaseDate = document.getElementById("releaseDate").value;
+        assignment.dueDate = document.getElementById("dueDate").value;
+        assignment.gradeWeight = parseInt(document.getElementById("gradeWeight").value);
+        assignment.hoursToComplete = parseFloat(document.getElementById("hoursNeeded").value);
+        HttpRequest(assignment, "put", RefreshPage, URL_BASE + "/api/Assignment");
+    }
+}
+
+function IsValidAddAssignmentInput() {
+    inputVerified = true;
+    ResetEditAssignmentLabels();
+    var releaseDateLblId = "lblreleaseDate";
+    var releaseDate = document.getElementById("releaseDate").value;
+    var dueDateLblId = "lbldueDate";
+    var dueDate = document.getElementById("dueDate").value;
+    var gradeWeightLblId = "lblgradeWeight";
+    var gradeWeight = document.getElementById("gradeWeight").value;
+    var hoursToCompleteLblId = "lblhoursNeeded";
+    var hoursToComplete = document.getElementById("hoursNeeded").value;
+
+    if (!IsValidDate(releaseDate)) {
+        UpdateErrorMessage(releaseDateLblId, "Release Date input invalid. Use format YYYY-MM-DD");
+        inputVerified = false;
+    }
+    if (!IsValidDate(dueDate)) {
+        UpdateErrorMessage(dueDateLblId, "Due Date input invalid. Use format YYYY-MM-DD");
+        inputVerified = false;
+    }
+    if (!IsValidGradeWeight(gradeWeight)) {
+        UpdateErrorMessage(gradeWeightLblId, "Grade Weight must be 0-100");
+        inputVerified = false;
+    }
+    if (!IsValidHoursToComplete(hoursToComplete)) {
+        UpdateErrorMessage(hoursToCompleteLblId, "Hours to Complete must be between 0-100");
+        inputVerified = false;
+    }
+    return inputVerified;
+}
+
+function ResetEditAssignmentLabels() {
+    document.getElementById("lblreleaseDate").innerHTML = "Release Date";
+    document.getElementById("lblreleaseDate").style.color = "#607d8b";
+    document.getElementById("lbldueDate").innerHTML = "Due Date";
+    document.getElementById("lbldueDate").style.color = "#607d8b";
+    document.getElementById("lblgradeWeight").innerHTML = "Grade Weight (%)";
+    document.getElementById("lblgradeWeight").style.color = "#607d8b";
+    document.getElementById("lblhoursNeeded").innerHTML = "Hours Needed To Complete";
+    document.getElementById("lblhoursNeeded").style.color = "#607d8b";
+}
+
+function UpdateErrorMessage(label, message) {
+    document.getElementById(label).innerHTML = message;
+    document.getElementById(label).style.color = "red";
+}
+
+function IsValidHoursToComplete(hours) {
+    var isValid = true;
+    if (isNaN(hours) || parseFloat(hours) <= 0 || parseFloat(hours) >= 100) {
+        isValid = false;
+    }
+    return isValid;
+}
+
+function IsValidGradeWeight(gradeWeight) {
+    var isValid = true;
+    if (isNaN(gradeWeight) || parseInt(gradeWeight) < 0 || parseInt(gradeWeight) > 100) {
+        isValid = false;
+    }
+    return isValid;
+}
+
+function IsValidDate(dateStr) {
+    var isValidDate = true;
+    if (dateStr.split("-").length != 3) {
+        isValidDate = false;
+    } else {
+        var splitDate = dateStr.split("-");
+        var year = splitDate[0];
+        var month = splitDate[1];
+        var day = splitDate[2];
+        if (isNaN(year) || isNaN(month) || isNaN(day)) {
+            isValidDate = false;
+        } else {
+            var date = new Date(Date.parse(dateStr));
+            if (isNaN(date)) {
+                isValidDate = false;
+            }
+        }
+    }
+    return isValidDate;
+}
+
+function updateHoursMonth(hours) {
+    if (hours <= 9) {
+        return "0" + hours;
+    } else {
+        return hours;
+    }
 }
 
 function HttpRequest(dataObject, method, afterResponseFunction, url) {

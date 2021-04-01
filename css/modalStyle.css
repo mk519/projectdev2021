@@ -81,7 +81,7 @@ section .contentBx .formBx .checkboxBx label {
   letter-spacing: 1px;
 }
 
-#btnLogin, #addClassConfirm, #btnAddTerm, #addExamConfirm, #addAssignmentConfirm, #btnRegister, #editExamConfirm{
+#btnLogin, #addClassConfirm, #btnAddTerm, #addExamConfirm, #addAssignmentConfirm, #btnRegister, #editExamConfirm, #editAssignmentConfirm{
     width: 100%;
     padding: 10px 20px;
     outline: none;

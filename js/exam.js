@@ -190,7 +190,6 @@ function UpdateExamOnClick(examId) {
         exam.endTime = CreateTimeString(date, endTime);
         HttpRequest(exam, "put", RefreshPage, URL_BASE + "/api/Exam");
     }
-
 }
 
 function OpenEditExamModal(examId) {

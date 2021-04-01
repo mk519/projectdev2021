@@ -278,6 +278,7 @@
                                             <th class="border-top-0">Due Date</th>
                                             <th class="border-top-0">Grade Weight</th>
                                             <th class="border-top-0"></th>
+                                            <th class="border-top-0"></th>
                                         </tr>
                                     </thead>
                                     <tbody id="assignmentList">
@@ -318,6 +319,48 @@
     <!-- ============================================================== -->
     <!-- End Wrapper -->
     <!-- ============================================================== -->
+    <div id="modalEditAssignment" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <section class="modalSection">
+                <div class="contentBx">
+                    <div class="formBx">
+                        <h2>Update Assignment</h2>
+                        <form>
+                            <div class="inputBx">
+                                <span id="lblreleaseDate">Release Date</span>
+                                <input id="releaseDate" type="date" name="">
+                            </div>
+
+                            <div class="inputBx">
+                                <span id="lbldueDate">Due Date</span>
+                                <input id="dueDate" type="date" name="">
+                            </div>
+
+                            <div class="inputBx">
+                                <span id="lblgradeWeight">Grade Weight (%)</span>
+                                <input id="gradeWeight" type="text" name="">
+                            </div>
+
+                            <div class="inputBx">
+                                <span id="lblhoursNeeded">Hours Needed To Complete</span>
+                                <input id="hoursNeeded" type="text" name="">
+                            </div>
+
+                            <div class="inputBx">
+                                <input id="editAssignmentConfirm" name="editAssignmentConfirm" type="button" value="Update Assignment" onclick="EditAssignmentOnCLick(this.name)">
+                            </div>
+
+                            <div class="inputBx">
+                                <input type="button" value="Cancel" onclick="CloseEditAssignmentModal()" name="">
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
     <!-- ============================================================== -->
     <!-- All Jquery -->
     <!-- ============================================================== -->
