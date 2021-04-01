@@ -62,8 +62,8 @@ class Term {
         var startDate = "<td>" + startFullDate + "</td>";
         var endDate = "<td>" + endFullDate + "</td>";
         var btnClassAdd = "<td>" + createAddClassButton(this.termId) + "</td>";
+        var btnSchedule = "<td>"+ "</td>";
         var btnDelete = "<td>" + createDeleteButton(this.termId) + "</td>";
-        var btnSchedule = "<td>" + createScheduleButton(this.termId) + "</td>";
         return "<tr>" + termNum + startDate + endDate + btnClassAdd + btnSchedule + btnDelete + "</tr>"
     }
 }
