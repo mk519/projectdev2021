@@ -112,14 +112,14 @@ function CreateTermColumns(responseJson) {
 }
 
 function createAddClassButton(id) { //term id
-    var style = ' style="border: 2px solid black;background-color:#008CBA;margin: 4px 2px;display: inline-block;text-align:center;font-size: 12px;text-decoration: none;border: none;color: white;padding: 4px 8px;" '
+    var style = ' style="border: 2px solid black; border-radius: 2px;background-color:#41b3f9;margin: 0px 2px;display: inline-block;text-align:center;font-size: 12px;text-decoration: none;border: none;color: white;padding: 4px 8px;" '
     var onclick = ' onclick="OpenAddClassModal(this.name)"'
     var name = ' name="' + id + '" '
     return '<button ' + name + style + onclick + 'type="button" >Add Class</button>';
 }
 
 function createDeleteButton(id) { // term id
-    var style = ' style="border: 2px solid black;background-color:#f44336;margin: 4px 2px;display: inline-block;text-align:center;font-size: 12px;text-decoration: none;border: none;color: white;padding: 4px 8px;" '
+    var style = ' style="border: 2px solid black; border-radius: 2px; background-color:#f44336;margin: 0px 2px;display: inline-block;text-align:center;font-size: 12px;text-decoration: none;border: none;color: white;padding: 4px 8px;" '
     var onclick = ' onclick="DeleteTermOnClick(this.name)" '
     var name = ' name="' + id + '" '
     return '<button ' + name + style + onclick + 'type="button" >Delete</button>';
