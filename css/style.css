@@ -10463,7 +10463,7 @@ File: scss
 
  section .contentBx .formBx .inputBx
  {
-   margin-bottom: 20px;
+   margin-bottom: 10px;
  }
 
  section .contentBx .formBx .inputBx span
@@ -10473,7 +10473,6 @@ File: scss
    display: inline-block;
    color: #607d8b;
    font-weight: 300;
-   font-size: 16px;
    letter-spacing: 1px;
  }
 
