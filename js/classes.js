@@ -204,6 +204,7 @@ function AddAssignmentOnCLick(classId) {
         assignment.dueDate = dueDate;
         assignment.gradeWeight = parseInt(gradeWeight);
         assignment.hoursToComplete = parseFloat(hoursToComplete);
+        document.getElementById("addedConfirmation").innerHTML = "Assignment has been added!"; // Notification in Footer
         HttpRequest(assignment, "post", CloseAddAssignmentModal, URL_BASE + "/api/Assignment");
     }
 }
@@ -261,6 +262,7 @@ function AddExamOnCLick(classId) {
         exam.classId = classId;
         exam.startTime = examDate + "T" + TimeToDateTimeStr(startTime).split("T")[1];
         exam.endTime = examDate + "T" + TimeToDateTimeStr(endTime).split("T")[1];
+        document.getElementById("addedConfirmation").innerHTML = "Exam has been added!"; // Notification in Footer
         HttpRequest(exam, "post", CloseAddExamModal, URL_BASE + "/api/Exam");
     }
 }
@@ -394,6 +396,9 @@ function OpenAddAssignmentModal(classId) {
     var modal = document.getElementById("modalAddAssignment");
     modal.style.display = "block";
     document.getElementById("addAssignmentConfirm").name = classId;
+    // Clear confirmation messages
+    document.getElementById("addedConfirmation").innerHTML = "";
+    //document.getElementById("examConfirmation").innerHTML = "";
 }
 
 function CloseAddAssignmentModal(response = null) {
@@ -413,6 +418,9 @@ function OpenAddExamModal(classId) {
     var modal = document.getElementById("modalAddExam");
     modal.style.display = "block";
     document.getElementById("addExamConfirm").name = classId;
+    // Clear confirmation messages
+    document.getElementById("addedConfirmation").innerHTML = "";
+    //document.getElementById("examConfirmation").innerHTML = "";
 }
 
 function CloseAddExamModal(response = null) {
