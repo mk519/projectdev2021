@@ -122,7 +122,7 @@
                         <li class="sidebar-item">
                             <a class="sidebar-link waves-effect waves-dark sidebar-link" href="terms.html"
                                 aria-expanded="false">
-                                <i class="fa fa-table" aria-hidden="true"></i>
+                                <i class="fas fa-calendar-check" aria-hidden="true"></i>
                                 <span class="hide-menu">My Terms</span>
                             </a>
                         </li>
@@ -154,6 +154,13 @@
                                 <span class="hide-menu">Profile & Settings</span>
                             </a>
                         </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="login.html"
+                                aria-expanded="false">
+                                <i class="fas fa-sign-in-alt" aria-hidden="true"></i>
+                                <span class="hide-menu">Log Out</span>
+                            </a>
+                        </li>
                     </ul>
                 </nav>
                 <!-- End Sidebar navigation -->
@@ -173,7 +180,7 @@
             <div class="page-breadcrumb bg-white">
                 <div class="row align-items-center">
                     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-                        <h4 class="page-title">Profile page</h4>
+                        <h4 class="page-title">Profile & Settings</h4>
                     </div>
                 </div>
                 <!-- /.col-lg-12 -->
@@ -240,7 +247,8 @@
 
                                     <div class="form-group mb-4">
                                         <div class="col-sm-12">
-                                            <input type="button" onclick="UpdateProfileOnClick()" value="Update Profile" />
+                                            <a href onclick="UpdateProfileOnClick(); return false;"
+                                            class="btn btn-success">Update Profile</a>
                                         </div>
                                     </div>
                                 </form>
@@ -269,7 +277,8 @@
                                     </div>
                                     <div class="form-group mb-4">
                                         <div class="col-sm-12">
-                                            <input type="button" onclick="UpdateSleepDetailsOnClick()" value="Apply Changes" />
+                                            <a href onclick="UpdateSleepDetailsOnClick(); return false;"
+                                            class="btn btn-success">Apply Changes</a>
                                         </div>
                                     </div>
                                 </form>
@@ -297,7 +306,8 @@
                                     </div>
                                     <div class="form-group mb-4">
                                         <div class="col-sm-12">
-                                            <input type="button" onclick="UpdateSleepDetailsOnClick()" value="Apply Changes" />
+                                            <a href onclick="UpdateSleepDetailsOnClick(); return false;"
+                                            class="btn btn-success">Apply Changes</a>
                                         </div>
                                     </div>
                                 </form>
