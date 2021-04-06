@@ -188,6 +188,7 @@ function AddClassOnClick(termId) {
         _class.friday = document.getElementById("chkFriday").checked;
         _class.saturday = document.getElementById("chkSaturday").checked;
         _class.sunday = document.getElementById("chkSunday").checked;
+        document.getElementById("addedConfirmation").innerHTML = "Class has been added!"; // Notification in Footer
         HttpRequest(_class, "post", CloseAddClassModal, URL_BASE + "/api/Class");
     }
 }
@@ -240,6 +241,7 @@ function AddTermOnClick() {
         term.userId = userData.userId;
         term.startDate = document.getElementById("startDate").value;
         term.endDate = document.getElementById("endDate").value;
+        document.getElementById("addedConfirmation").innerHTML = "Term has been added!"; // Notification in Footer
         HttpRequest(term, "post", CloseAddTermModal, URL_BASE + "/api/Term");
     }
 }
@@ -374,6 +376,8 @@ function OpenAddTermModal() {
     // Get the modal
     var modal = document.getElementById("modalAddTerm");
     modal.style.display = "block";
+    // Clear confirmation messages
+    document.getElementById("addedConfirmation").innerHTML = "";
 }
 
 function CloseAddTermModal(response = null) {
@@ -392,6 +396,8 @@ function OpenAddClassModal(termId) {
     var modal = document.getElementById("modalAddClass");
     modal.style.display = "block";
     document.getElementById("addClassConfirm").name = termId;
+    // Clear confirmation messages
+    document.getElementById("addedConfirmation").innerHTML = "";
 }
 
 function CloseAddClassModal(response = null) {
