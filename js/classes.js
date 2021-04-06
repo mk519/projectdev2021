@@ -306,7 +306,7 @@ function UpdateErrorMessage(label, message) {
 
 function IsValidHoursToComplete(hours) {
     var isValid = true;
-    if (isNaN(hours) || parseFloat(hours) <= 0 || parseFloat(hours) >= 100) {
+    if (hours == "" || isNaN(hours) || parseFloat(hours) <= 0 || parseFloat(hours) >= 100) {
         isValid = false;
     }
     return isValid;
@@ -314,7 +314,7 @@ function IsValidHoursToComplete(hours) {
 
 function IsValidGradeWeight(gradeWeight) {
     var isValid = true;
-    if (isNaN(gradeWeight) || parseInt(gradeWeight) < 0 || parseInt(gradeWeight) > 100) {
+    if (gradeWeight == "" || isNaN(gradeWeight) || parseInt(gradeWeight) < 0 || parseInt(gradeWeight) > 100) {
         isValid = false;
     }
     return isValid;
