@@ -121,7 +121,7 @@
                         <li class="sidebar-item">
                             <a class="sidebar-link waves-effect waves-dark sidebar-link" href="terms.html"
                                 aria-expanded="false">
-                                <i class="fa fa-table" aria-hidden="true"></i>
+                                <i class="fas fa-calendar-check" aria-hidden="true"></i>
                                 <span class="hide-menu">My Terms</span>
                             </a>
                         </li>
@@ -151,6 +151,13 @@
                                 aria-expanded="false">
                                 <i class="fas fa-cog" aria-hidden="true"></i>
                                 <span class="hide-menu">Profile & Settings</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="login.html"
+                                aria-expanded="false">
+                                <i class="fas fa-sign-in-alt" aria-hidden="true"></i>
+                                <span class="hide-menu">Log Out</span>
                             </a>
                         </li>
                     </ul>
@@ -200,13 +207,15 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="white-box">
-                            <h3 class="box-title">Next Important Event</h3>
+                            <h3 class="box-title" style="font-size: 28px">Welcome back, <span style="color: #41b3f9" id="nameTopScreen1">.</span></h3>
+                            <b style="font-size: 14px; letter-spacing: 1px; padding-bottom: 50px; color:#9ba3ac;">Here's what's on your plate:</b>
+                            <hr style="color:#d8d8d8">
+                            <b style="font-size: 14px; letter-spacing: 0px; padding-bottom: 50px; color:#000;">Task:</b> <br><b style="color:#7ace4c;" id="lblTitleString"></b><br><br>
+                            <b style="font-size: 14px; letter-spacing: 0px; padding-bottom: 50px; color:#000;">Scheduled For:</b> <br><b style="color:#7ace4c;" id="lblTimeString"></b> - <b style="color:#7ace4c;" id="lblDateString"></b>
+                            <b style="color:#000;" id="lblTimeString"></b> <b style="color:#7ace4c;" id="lblDateString"></b></p>
                             <hr style="color:#d8d8d8">
                             <h4 id="lblTitleString"></h4>
-                            <br>
-                            <p id="lblDescriptionString"></p>
-                            <p><b id="lblTimeString"></b></p>
-                            <div id="lblDateString"></div><p class="fas fa-calendar-alt" aria-hidden="true"></p>
+                            <p id="lblDescriptionString"></p>                  
                         </div>
                     </div>
                 </div>
@@ -219,8 +228,8 @@
                     <div class="col-lg-4 col-md-12">
                         <div class="white-box analytics-info">
                             <ul class="list-inline two-part d-flex align-items-center mb-0">
-                                <h3 class="box-title"><i class="fas fa-asterisk fa-3x" style="color:RED" aria-hidden="true"></i></h3>
-                                <h3 class="box-title" style="padding-right: 5px; text-align: right; flex: auto;"><span class="counter text-success"><b id="totalCourses">Null</b></span><br>Total Courses</h4>
+                                <h3 class="box-title"><i class="fa fa-table fa-3x" style="color:#505770" aria-hidden="true"></i></h3>
+                                <h3 class="box-title" style="padding-right: 5px; text-align: right; flex: auto;"><span class="counter .text-success" style="color: #7ace4c;"><b id="totalCourses">Null</b></span><br>Total Courses</h4>
                             </ul>
                         </div>
                     </div>
@@ -228,8 +237,8 @@
                     <div class="col-lg-4 col-md-12">
                         <div class="white-box analytics-info">
                             <ul class="list-inline two-part d-flex align-items-center mb-0">
-                                <h3 class="box-title"><i class="fas fa-asterisk fa-3x" style="color:RED" aria-hidden="true"></i></h3>
-                                <h3 class="box-title" style="padding-right: 5px; text-align: right; flex: auto;"><span class="counter text-success"><b id="totalAssignments">Null</b></span><br>Total Assignments</h4>
+                                <h3 class="box-title"><i class="fas fa-list fa-3x" style="color:#505770" aria-hidden="true"></i></h3>
+                                <h3 class="box-title" style="padding-right: 5px; text-align: right; flex: auto;"><span class="counter .text-success" style="color: #7ace4c;"><b id="totalAssignments">Null</b></span><br>Total Assignments</h4>
                             </ul>
                         </div>
                     </div>
@@ -237,8 +246,8 @@
                     <div class="col-lg-4 col-md-12">
                         <div class="white-box analytics-info">
                             <ul class="list-inline two-part d-flex align-items-center mb-0">
-                                <h3 class="box-title"><i class="fas fa-asterisk fa-3x" style="color:RED" aria-hidden="true"></i></h3>
-                                <h3 class="box-title" style="padding-right: 5px; text-align: right; flex: auto;"><span class="counter text-success"><b id="totalExams">Null</b></span><br>Upcoming Exams</h4>
+                                <h3 class="box-title"><i class="fas fa-pencil-alt fa-3x" style="color:#505770" aria-hidden="true"></i></h3>
+                                <h3 class="box-title" style="padding-right: 5px; text-align: right; flex: auto;"><span class="counter .text-success" style="color: #7ace4c;"><b id="totalExams">Null</b></span><br>Upcoming Exams</h4>
                             </ul>
                         </div>
                     </div>
