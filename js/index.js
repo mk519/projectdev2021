@@ -105,6 +105,7 @@ function UpdatePageCounts(response) {
         }
     }
     document.getElementById("nameTopScreen").innerHTML = user.firstName + " " + user.lastName;
+    document.getElementById("nameTopScreen1").innerHTML = user.firstName + " " + user.lastName;
     document.getElementById("totalCourses").innerHTML = numClasses;
     document.getElementById("totalAssignments").innerHTML = numExams;
     document.getElementById("totalExams").innerHTML = numAssignments;
