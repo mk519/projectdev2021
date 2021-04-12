@@ -217,7 +217,7 @@ function IsValidAddClassInput() {
         inputVerified = false;
     }
     if (!IsValidInputString(courseName, 1, 40)) {
-        UpdateErrorMessage(courseNameLblId, "Course Code must be 1-40 characters & not some special characters");
+        UpdateErrorMessage(courseNameLblId, "Course Name must be 1-40 characters & not some special characters");
         inputVerified = false;
     }
     return inputVerified;
